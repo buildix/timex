@@ -19,7 +19,7 @@ class TimexServiceProvider extends PackageServiceProvider
             ->name('timex')
             ->hasConfigFile()
             ->hasViews()
-            ->hasMigration('create_timex_table')
+            ->hasMigration('create_timex_tables')
             ->hasCommand(TimexCommand::class);
     }
 }
