@@ -1,12 +1,12 @@
 <?php
 
-namespace VendorName\Skeleton\Commands;
+namespace Buildix\Timex\Commands;
 
 use Illuminate\Console\Command;
 
-class SkeletonCommand extends Command
+class TimexCommand extends Command
 {
-    public $signature = 'skeleton';
+    public $signature = 'timex';
 
     public $description = 'My command';
 
