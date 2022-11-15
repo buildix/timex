@@ -1,4 +1,4 @@
-# TIMEX - a powerful calendar plugin for filament 
+# TIMEX - a powerful calendar plugin for filament
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/buildix/timex.svg?style=flat-square)](https://packagist.org/packages/buildix/timex)
 [![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/buildix/timex/run-tests?label=tests)](https://github.com/buildix/timex/actions?query=workflow%3Arun-tests+branch%3Amain)
