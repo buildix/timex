@@ -36,15 +36,15 @@ class Timex extends Page
             ->end(Carbon::today())
             ->subject('Meeting subject')
             ->body('Meeting body'),
-//            EventItem::make(uuid_create())
-//            ->start(Carbon::tomorrow())
-//            ->end(Carbon::tomorrow())
-//            ->subject('Meeting subject 2')
-//            ->body('Meeting body 2'),
-//            EventItem::make(uuid_create())
-//            ->start(Carbon::today()->addDays(20))
-//            ->end(Carbon::today()->addDays(20))
-//            ->subject('Meeting subject 3')
+            EventItem::make(uuid_create())
+            ->start(Carbon::tomorrow())
+            ->end(Carbon::tomorrow())
+            ->subject('Meeting subject 2')
+            ->body('Meeting body 2'),
+            EventItem::make(uuid_create())
+            ->start(Carbon::today()->addDays(20))
+            ->end(Carbon::today()->addDays(20))
+            ->subject('Meeting subject 3')
         ];
     }
 
