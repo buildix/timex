@@ -11,6 +11,6 @@ class Timex extends Facade
 {
     protected static function getFacadeAccessor()
     {
-        return \Buildix\Timex\Timex::class;
+        return "timex";
     }
 }
