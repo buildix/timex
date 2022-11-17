@@ -11,13 +11,6 @@ class Week extends Component
     public $days;
     public $last;
 
-    public function mount()
-    {
-        $this->name = $this->name;
-        $this->dayOfWeek = $this->dayOfWeek;
-        $this->days = $this->days;
-        $this->last = $this->last;
-    }
     public function render()
     {
         return view('timex::calendar.week');

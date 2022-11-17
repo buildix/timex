@@ -10,14 +10,9 @@ class Event extends Component
     public $body;
     public $start;
     public $eventID;
-
-    public function mount()
-    {
-        $this->subject = $this->subject;
-        $this->body = $this->body;
-        $this->start = $this->start;
-        $this->eventID = $this->eventID;
-    }
+    public $color;
+    public $icon;
+    
     public function render()
     {
         return view('timex::calendar.event');

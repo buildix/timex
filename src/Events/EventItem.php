@@ -12,8 +12,11 @@ class EventItem
     protected ?string $body = null;
     public $start;
     public $end;
+    public string $color;
     protected Carbon $startTime;
     protected Carbon $endTime;
+    protected $type;
+    protected ?string $icon = null;
 
 
     final public function __construct($eventID)
@@ -61,12 +64,23 @@ class EventItem
         return $this;
 
     }
+    public function color(string $color): static
+    {
+        $this->color = $color;
+
+        return $this;
+
+    }
+
+    public function getColor(): string
+    {
+        return isset($this->color) ? $this->color : 'primary';
+    }
 
     public function getSubject(): string
     {
         return $this->subject;
     }
-
 
     public function getBody(): ?string
     {
@@ -86,6 +100,18 @@ class EventItem
     public function getEventID()
     {
         return $this->eventID;
+    }
+
+    public function icon(?string $icon): static
+    {
+        $this->icon = $icon;
+
+        return $this;
+    }
+
+    public function getIcon(): ?string
+    {
+        return $this->icon;
     }
 
 }

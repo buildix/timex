@@ -16,10 +16,6 @@ class Day extends Component
 
     public function mount()
     {
-        $this->day = $this->day;
-        $this->timestamp = $this->timestamp;
-        $this->first = $this->first;
-        $this->last = $this->last;
         $this->events = $this->getEvents($this->timestamp);
     }
 
@@ -42,4 +38,6 @@ class Day extends Component
     {
         return $event == $timespamp;
     }
+
+
 }

@@ -39,6 +39,6 @@ trait TimexTrait
     {
         return $this->endOfWeek = config('timex.week.end');;
     }
-
+    
 
 }

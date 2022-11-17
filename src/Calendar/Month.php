@@ -2,8 +2,10 @@
 
 namespace Buildix\Timex\Calendar;
 
+use Buildix\Timex\Events\InteractWithEvents;
 use Buildix\Timex\Traits\TimexTrait;
 use Carbon\Carbon;
+use Filament\Notifications\Notification;
 use Livewire\Component;
 
 class Month extends Component
@@ -16,6 +18,10 @@ class Month extends Component
     public $currMonth;
     public $dayLabels;
     public $weekDays;
+    public $shouldRender = true;
+
+    protected $listeners = ['onEventChanged' => 'onEventChanged', 'modelUpdated' => 'loaded'];
+
 
     protected function setCalendar(): void
     {
@@ -59,6 +65,7 @@ class Month extends Component
 
         $weekDays = $weekDays
             ->map(function ($month) use ($currMonthDays) {
+                $month['group'] = uuid_create();
                 $month['dayName'] = $month['dayName'];
                 $month['days'] = $currMonthDays
                     ->filter(function ($currMonthDays) use ($month) {
@@ -69,6 +76,7 @@ class Month extends Component
 
         return [
             'weekDays' => $weekDays,
+            'fullDays' => $currMonthDays
         ];
     }
 
@@ -82,10 +90,8 @@ class Month extends Component
     public function mount()
     {
         $this->monthName = today()->monthName;
-        $this->dayLabels = $this->dayLabels;
-        $this->currMonth = $this->currMonth;
-
     }
+
 
     public function render()
     {
@@ -97,6 +103,7 @@ class Month extends Component
         $this->today = $this->today->subMonth();
         $this->monthName = $this->today->monthName;
         $this->setCalendar();
+        $this->loaded();
     }
 
     public function onNextMonthClick()
@@ -104,6 +111,7 @@ class Month extends Component
         $this->today = $this->today->addMonth();
         $this->monthName = $this->today->monthName;
         $this->setCalendar();
+        $this->loaded();
     }
 
     public function onTodayClick()
@@ -111,6 +119,7 @@ class Month extends Component
         $this->today = Carbon::today();
         $this->monthName = $this->today->monthName;
         $this->setCalendar();
+        $this->loaded();
     }
 
     public function setStartOfMonth()
@@ -138,4 +147,17 @@ class Month extends Component
     {
         return $day['dayOfWeek'] === $weekDay['dayOfWeek'];
     }
+
+    public function loaded(){
+
+        $this->dispatchBrowserEvent('monthLoaded',$this->getDays());
+    }
+    public function onEventChanged($eventID, $toDate)
+    {
+        $this->emitUp('eventUpdated',['id' => $eventID,'toDate' => $toDate]);
+        $this->shouldSkipRender = true;
+    }
+
+
+
 }

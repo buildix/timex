@@ -1,5 +1,5 @@
 <div>
-    <div class="font-medium p-2 border-b h-10 dark:border-gray-600">
+    <div class="font-medium p-2 h-10">
         {{$name}}
     </div>
     <div
@@ -7,7 +7,7 @@
             [
                 'grid grid-flow-col',
                 'border-r dark:border-gray-600' => !$last,
-                'bg-gray-50 dark:bg-gray-700' => in_array($dayOfWeek,\Carbon\Carbon::getWeekendDays())
+                'bg-gray-50 dark:bg-gray-700' => in_array($dayOfWeek,\Carbon\Carbon::getWeekendDays()),
             ]
         )
         @if($last)
