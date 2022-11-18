@@ -1,3 +1,5 @@
+![day-1 (1)](https://user-images.githubusercontent.com/2136612/202689410-da6c8cbe-4184-4a1c-9735-b16b898eef60.jpeg)
+
 # TIMEX - a powerful calendar plugin for filament
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/buildix/timex.svg?style=flat-square)](https://packagist.org/packages/buildix/timex)
