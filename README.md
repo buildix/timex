@@ -1,4 +1,5 @@
-![day-1 (1)](https://user-images.githubusercontent.com/2136612/202689410-da6c8cbe-4184-4a1c-9735-b16b898eef60.jpeg)
+![timex-logo](https://user-images.githubusercontent.com/2136612/202689778-eb013a03-b0fa-4c0e-941c-7d999c09fd6f.jpeg)
+
 
 # TIMEX - a powerful calendar plugin for filament
 
