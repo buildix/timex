@@ -44,7 +44,7 @@ class Timex extends Page
             ->map(function (Event $event){
                 return EventItem::make($event->id)
                     ->subject($event->subject)
-                    ->color('success')
+//                    ->color()
                     ->icon('heroicon-o-cake')
                     ->start(Carbon::create($event->start))
                     ->end(Carbon::create($event->end));

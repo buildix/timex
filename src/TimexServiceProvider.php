@@ -19,7 +19,7 @@ class TimexServiceProvider extends PluginServiceProvider
     protected array $scripts = [
       'timex' => __DIR__.'/../resources/dist/timex.js'
     ];
-    
+
     public function configurePackage(Package $package): void
     {
         /*

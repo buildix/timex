@@ -72,6 +72,7 @@ class EventItem
 
     }
 
+
     public function getColor(): string
     {
         return isset($this->color) ? $this->color : 'primary';
