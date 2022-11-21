@@ -12,11 +12,12 @@ class EventItem
     protected ?string $body = null;
     public $start;
     public $end;
-    public string $color;
-    protected Carbon $startTime;
-    protected Carbon $endTime;
+    public ?string $color = null;
+    public Carbon $startTime;
+    public Carbon $endTime;
     protected $type;
     protected ?string $icon = null;
+    protected ?string $category = null;
 
 
     final public function __construct($eventID)
@@ -36,11 +37,35 @@ class EventItem
         return app(static::class, ['eventID' => $eventID]);
     }
 
+    public function category(?string $category): static
+    {
+        $this->category = $category;
+
+        return $this;
+    }
+    
+    public function getCategory(): ?string
+    {
+        return $this->category;
+    }
+
     public function start(Carbon $start): static
     {
         $this->start = $start->setHour(0)->setMinute(0)->setSeconds(0)->timestamp;
 
         return $this;
+    }
+
+    public function startTime(Carbon $startTime):static
+    {
+        $this->startTime = $startTime;
+
+        return $this;
+    }
+
+    public function getStartTime(): Carbon
+    {
+        return $this->startTime;
     }
 
     public function end(Carbon $end): static
@@ -64,7 +89,7 @@ class EventItem
         return $this;
 
     }
-    public function color(string $color): static
+    public function color(?string $color): static
     {
         $this->color = $color;
 
@@ -73,7 +98,7 @@ class EventItem
     }
 
 
-    public function getColor(): string
+    public function getColor(): ?string
     {
         return isset($this->color) ? $this->color : 'primary';
     }
@@ -88,7 +113,7 @@ class EventItem
         return $this->body;
     }
 
-    public function getStart(): Carbon
+    public function getStart()
     {
         return $this->start;
     }

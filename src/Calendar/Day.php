@@ -3,6 +3,7 @@
 namespace Buildix\Timex\Calendar;
 
 use Buildix\Timex\Pages\Timex;
+use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Livewire\Component;
 
@@ -22,7 +23,9 @@ class Day extends Component
 
     public function getEvents($timespamp): Collection
     {
-        $events = Timex::getEvents();
+        $events = collect(Timex::getEvents())->sortBy(function ($event){
+            $event->startTime;
+        });
         return collect($events)->filter(function ($events) use ($timespamp){
             return $this->eventInDay($events->start,$timespamp);
 

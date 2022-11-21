@@ -2,11 +2,13 @@
     $isCurrentDay = \Carbon\Carbon::createFromTimestamp($timestamp)->isCurrentDay();
     $isCurrentMonthDay = \Carbon\Carbon::createFromTimestamp($timestamp)->isCurrentMonth();
     $isWeekend = \Carbon\Carbon::createFromTimestamp($timestamp)->isWeekend();
+    $firstDayOfMonth = \Carbon\Carbon::createFromTimestamp($timestamp)->firstOfMonth()->timestamp;
+    $isFirstOfMonth = $timestamp == $firstDayOfMonth;
 
 @endphp
 <div
     class="group items-center text-left"
-    style="height: 140px;"
+    style="height: 130px;"
 >
     <div
         @class([
@@ -23,9 +25,20 @@
                 ]
             )
         >
-            <span class="absolute">
+            <span @class([
+                    'absolute',
+            ])>
                 {{$day}}
             </span>
+        </span>
+        <span class="absolute">
+            <div
+                @class([
+                'w-32 ml-1 text-xs',
+                'hidden' => !$isFirstOfMonth
+                ])>
+                {{\Carbon\Carbon::createFromTimestamp($timestamp)->shortMonthName}}
+            </div>
         </span>
     </div>
     <div class="grid grid-flow-col gap-0.5"
@@ -40,6 +53,9 @@
                 :subject="$event->getSubject()"
                 :body="$event->getBody()"
                 :color="$event->getColor()"
+                :category="$event->getCategory()"
+                :start="$event->getStart()"
+                :start-time="$event->getStartTime()"
                 :icon="$event->getIcon()"/>
         </div>
     @endforeach

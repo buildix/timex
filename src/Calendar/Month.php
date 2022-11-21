@@ -3,6 +3,7 @@
 namespace Buildix\Timex\Calendar;
 
 use Buildix\Timex\Events\InteractWithEvents;
+use Buildix\Timex\Pages\Timex;
 use Buildix\Timex\Traits\TimexTrait;
 use Carbon\Carbon;
 use Filament\Notifications\Notification;
@@ -20,7 +21,12 @@ class Month extends Component
     public $weekDays;
     public $shouldRender = true;
 
-    protected $listeners = ['onEventChanged' => 'onEventChanged', 'modelUpdated' => 'loaded'];
+    protected $listeners = [
+        'onEventChanged' => 'onEventChanged',
+        'modelUpdated' => 'loaded',
+        'onTodayClick' => 'onTodayClick',
+        'onPrevClick' => 'onPreviousMonthClick',
+        'onNextClick' => 'onNextMonthClick'];
 
 
     protected function setCalendar(): void
@@ -104,6 +110,7 @@ class Month extends Component
         $this->monthName = $this->today->monthName;
         $this->setCalendar();
         $this->loaded();
+        $this->emitUp('monthNameChanged',$this->monthName,$this->today->year);
     }
 
     public function onNextMonthClick()
@@ -112,6 +119,7 @@ class Month extends Component
         $this->monthName = $this->today->monthName;
         $this->setCalendar();
         $this->loaded();
+        $this->emitUp('monthNameChanged',$this->monthName,$this->today->year);
     }
 
     public function onTodayClick()
@@ -120,6 +128,7 @@ class Month extends Component
         $this->monthName = $this->today->monthName;
         $this->setCalendar();
         $this->loaded();
+        $this->emitUp('monthNameChanged',$this->monthName,$this->today->year);
     }
 
     public function setStartOfMonth()
@@ -151,12 +160,14 @@ class Month extends Component
     public function loaded(){
 
         $this->dispatchBrowserEvent('monthLoaded',$this->getDays());
+        $this->emitUp('monthNameChanged',$this->monthName,$this->today->year);
     }
     public function onEventChanged($eventID, $toDate)
     {
         $this->emitUp('eventUpdated',['id' => $eventID,'toDate' => $toDate]);
         $this->shouldSkipRender = true;
     }
+
 
 
 
