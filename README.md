@@ -207,6 +207,8 @@ If you need to change label naming, slug, navigation group, etc, go ahead to TiM
 
 
 ### Dynamic icon set
+<img width="1015" alt="timex-icons" src="https://user-images.githubusercontent.com/2136612/203330528-a8cbc30f-26dd-4fd2-a2fc-87a9ae106fd8.png">
+
 
 TiMEX comes with two custom icons:
 1. First one is static, represents TiMEX branding
