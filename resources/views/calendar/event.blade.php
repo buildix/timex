@@ -1,11 +1,8 @@
 @php
-    $icon = match ($category){
-        default => null,
-        'primary' => 'heroicon-o-calendar',
-        'danger' => 'heroicon-o-user-group',
-        'secondary' => 'heroicon-o-phone',
-        'success' => 'heroicon-o-presentation-chart-bar',
-    }
+    $icon = config('timex.categories.icons.'.$category);
+    $color = config('timex.categories.colors.'.$color);
+    $eventStart = \Carbon\Carbon::createFromTimestamp($start)->setHours(23);
+    $isInPast =  $eventStart->isPast();
 @endphp
 
 <div class="flex"
@@ -14,13 +11,8 @@
         style="width: 4px;"
         @class([
         'h-full ml-1 rounded-md',
-        match ($color){
-            default => 'bg-primary-600',
-            'danger' => 'bg-danger-600',
-            'success' => 'bg-success-600',
-            'warning' => 'bg-warning-600',
-            'secondary' => 'bg-gray-600',
-            }
+        'bg-'.$color.'-600' => $color != 'secondary',
+        'bg-gray-600' => $color == 'secondary',
 ])>
 
     </span>
@@ -30,15 +22,9 @@
         'w-full rounded ml-1 mr-1',
         'hover:bg-'.$color.'-600/20' => $color !== 'secondary',
         'hover:bg-gray-600/20' => $color == 'secondary',
-        match ($color){
-            default => 'text-white hover:text-primary-500 bg-primary-500',
-            'danger' => 'text-white hover:text-danger-500 bg-danger-500',
-            'success' => 'text-white hover:text-success-500 bg-success-500',
-            'warning' => 'text-white hover:text-warning-500 bg-warning-500',
-            'secondary' => 'text-white hover:text-gray-500 bg-gray-500',
-            }
+        'text-white hover:text-'.$color.'-500 bg-'.$color.'-500' => $color != 'secondary' && !$isInPast,
+        'text-white hover:text-gray-500 bg-gray-500' => $color == 'secondary' && !$isInPast,
         ])
-            style="border-style: solid; border-width: 0.2px; border-color: currentColor;"
     >
 
         @if($icon)

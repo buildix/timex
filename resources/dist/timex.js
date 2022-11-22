@@ -11,10 +11,8 @@ window.addEventListener('monthLoaded', event => {
                 dataTransfer.setData('id', dragEl.id);
             },
             onStart: function (evt){
-                // console.log(evt)
             },
             onChoose: function (/**Event*/evt) {
-                // console.log(evt)
             },
             onMove: function (evt){
                 let element = document.getElementById(evt.to.id);
@@ -32,3 +30,4 @@ window.addEventListener('monthLoaded', event => {
         })
     })
 });
+

@@ -26,7 +26,8 @@ class Month extends Component
         'modelUpdated' => 'loaded',
         'onTodayClick' => 'onTodayClick',
         'onPrevClick' => 'onPreviousMonthClick',
-        'onNextClick' => 'onNextMonthClick'];
+        'onNextClick' => 'onNextMonthClick'
+    ];
 
 
     protected function setCalendar(): void
@@ -53,12 +54,16 @@ class Month extends Component
     public function setDayLabels(): void
     {
         $this->dayLabels = collect([]);
-
         $dayOne = 0;
         foreach($this->currMonth as $weekOfDay ){
             $this->dayLabels->push([
                 'dayOfWeek' => Carbon::createFromTimestamp($weekOfDay['id'])->dayOfWeek,
-                'dayName' => Carbon::createFromTimestamp($weekOfDay['id'])->shortDayName,
+                'dayName' => match (config('timex.dayName')){
+                        'dayName' => Carbon::createFromTimestamp($weekOfDay['id'])->dayName,
+                        'shortDayName' => Carbon::createFromTimestamp($weekOfDay['id'])->shortDayName,
+                        default => Carbon::createFromTimestamp($weekOfDay['id'])->minDayName,
+
+                }
             ]);
             if(++$dayOne > 6) break;
         }
@@ -68,7 +73,6 @@ class Month extends Component
     {
         $weekDays = $this->dayLabels;
         $currMonthDays = $this->currMonth;
-
         $weekDays = $weekDays
             ->map(function ($month) use ($currMonthDays) {
                 $month['group'] = uuid_create();
@@ -79,7 +83,6 @@ class Month extends Component
                     });
                 return $month;
             });
-
         return [
             'weekDays' => $weekDays,
             'fullDays' => $currMonthDays
@@ -90,14 +93,12 @@ class Month extends Component
     public function boot()
     {
         $this->setCalendar();
-
     }
 
     public function mount()
     {
         $this->monthName = today()->monthName;
     }
-
 
     public function render()
     {

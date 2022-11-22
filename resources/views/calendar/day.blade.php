@@ -21,7 +21,7 @@
                 [
                     'relative inline-flex items-center justify-center text-sm ml-auto rtl:ml-0 rtl:mr-auto font-medium tracking-tight rounded-xl whitespace-normal',
                     'text-white bg-primary-500' => $isCurrentDay,
-                    'rounded-full px-3 py-0.5 h-6',
+                    'rounded-full px-3 py-0.5 h-6 -mb-2',
                 ]
             )
         >
@@ -41,10 +41,10 @@
             </div>
         </span>
     </div>
-    <div class="grid grid-flow-col gap-0.5"
+    <div class="-mt-2 -pt-2" style="overflow-y: auto; overflow-x: hidden;  overflow-scrolling: touch; height: 88px;">
+    <div class="grid grid-flow-row gap-0.5"
          id="{{$timestamp}}"
-         data-status-id="{{$timestamp}}"
-    >
+         data-status-id="{{$timestamp}}">
     @foreach($events as $event)
         <div id="{{ $event->getEventID() }}"
         wire:click="$emitUp('onEventClick','{{$event->getEventID()}}')">
@@ -59,5 +59,6 @@
                 :icon="$event->getIcon()"/>
         </div>
     @endforeach
+    </div>
     </div>
 </div>

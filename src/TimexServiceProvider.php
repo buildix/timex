@@ -61,7 +61,13 @@ class TimexServiceProvider extends PluginServiceProvider
     protected function getPages(): array
     {
         return [
-            \Buildix\Timex\Pages\Timex::class
+            config('timex.pages.timex')
+        ];
+    }
+    protected function getResources(): array
+    {
+        return [
+            config('timex.resources.event')
         ];
     }
 }

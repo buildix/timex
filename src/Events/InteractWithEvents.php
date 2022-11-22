@@ -16,26 +16,17 @@ trait InteractWithEvents
 {
     use InteractsWithForms;
     use UsesResourceForm;
-    public $editEventState = [];
-    protected $eventModal;
     protected static string $resource;
     protected static string $model;
+    public $record;
 
-//    public function onEventClick($eventID)
-//    {
-//        $event = new Fluent(Event::find($eventID)->getAttributes());
-//        $this->editEventState = $event->toArray();
-//        $this->form
-//        ->schema($this->getResourceForm(2)->getSchema())
-//        ->statePath("editEventState");
-//        $this->dispatchBrowserEvent('open-modal', ['id' => 'timex--event-modal']);
-//    }
-
-    public function onEventSubmit()
+    /**
+     * @return string
+     */
+    public static function getModel(): string
     {
-
+        return static::$model = config('timex.models.event');
     }
-
 
     public static function getResource(): string
     {
@@ -44,27 +35,18 @@ trait InteractWithEvents
 
     protected function getFormModel(): Model|string|null
     {
-        return static::$model = config('timex.models.event');
+        $record = self::getModel()::query()->find($this->record);
+        return $record;
     }
 
     public function eventUpdated($data)
     {
-        $event = Event::find($data['id']);
+        $event = self::getModel()::query()->find($data['id']);
         $event->update([
             'start' => Carbon::createFromTimestamp($data['toDate'])
         ]);
         $this->emit('modelUpdated',['id' => $this->id]);
     }
 
-//    protected function getEventForm(): array
-//    {
-//        return [
-//            'eventForm' => $this->makeForm()
-//                ->schema([
-//                    TextInput::make('subject')
-//                ])
-//                ->statePath('editEventState'),
-//        ];
-//    }
 
 }

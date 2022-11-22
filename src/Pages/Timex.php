@@ -14,13 +14,14 @@ use Filament\Pages\Actions\ActionGroup;
 use Filament\Pages\Actions\CreateAction;
 use Filament\Pages\Actions\DeleteAction;
 use Filament\Pages\Page;
-//use Filament\Resources\Form;
 use Filament\Forms;
 use Filament\Resources\Pages\Concerns\UsesResourceForm;
 use Filament\Resources\Resource;
 use Illuminate\Contracts\Support\Htmlable;
+use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Support\Fluent;
-use Mikrosmile\FilamentCalendar\Models\Event;
+use Illuminate\Support\Str;
+use function Filament\Support\get_model_label;
 
 class Timex extends Page
 {
@@ -29,30 +30,50 @@ class Timex extends Page
     use UsesResourceForm;
 
     protected static string $view = "timex::layout.page";
-    protected static ?string $slug = "timex";
-    protected static ?string $navigationIcon = "timex-timex";
-    protected static ?string $eventResource;
     protected $listeners = ['eventUpdated','onEventClick','monthNameChanged'];
     protected static $eventData;
-    protected static ?string $eventHeading = "Create event";
     public string $monthName = "";
 
     protected static function getNavigationLabel(): string
     {
-        return Carbon::today()->isoFormat('dddd, D MMM');
+        return config('timex.pages.label.navigation');
     }
 
-
-    protected function getHeading(): string|Htmlable
+    protected function getTitle(): string
     {
-        return " ";
+        return config('timex.pages.label.title');
     }
 
     protected function getBreadcrumbs(): array
     {
         return [
-            Carbon::today()->isoFormat('dddd, D MMM')
+            config('timex.pages.label.breadcrumbs')
         ];
+    }
+
+    protected static function getNavigationGroup(): ?string
+    {
+        return config('timex.pages.group');
+    }
+
+    protected static function getNavigationIcon(): string
+    {
+        return config('timex.pages.icon.static') ? config('timex.pages.icon.timex') : config('timex.pages.icon.day');
+    }
+
+    public static function getSlug(): string
+    {
+        return config('timex.pages.slug');
+    }
+
+    protected static function shouldRegisterNavigation(): bool
+    {
+        return config('timex.pages.shouldRegisterNavigation');
+    }
+
+    protected function getHeading(): string|Htmlable
+    {
+        return " ";
     }
 
     public function monthNameChanged($data,$year)
@@ -79,150 +100,95 @@ class Timex extends Page
                     ->outlined()
                     ->label($this->monthName),
                 Action::make('openCreateModal')
-                    ->label('Create event')
-                    ->icon('heroicon-o-plus')
-                    ->size('sm')->outlined()->slideOver()
-                    ->extraAttributes([
-                        'class' => '-mr-2'
-                    ])
+                    ->label(__('filament::resources/pages/create-record.title',
+                            ['label' => \Str::headline(static::getResource()::getModelLabel())]))
+                    ->icon(config('timex.pages.buttons.icons.createEvent'))
+                    ->size('sm')
+                    ->outlined(config('timex.pages.buttons.outlined'))
+                    ->slideOver()
+                    ->extraAttributes(['class' => '-mr-2'])
                     ->form($this->getResourceForm(2)->getSchema())
                     ->mountUsing(fn (Forms\ComponentContainer $form) => $form->fill(self::$eventData))
-                    ->modalHeading(self::$eventHeading)
-                    ->modalWidth('xl')
-                    ->action(function (array $data){
-                        if ($data['id'] == null){
-                            $this->getFormModel()::query()->create($data);
-                            $this->emit('modelUpdated',['id' => $this->id]);
-                        }else{
-                            $this->getFormModel()::query()->find($data['id'])->update($data);
-                            $this->emit('modelUpdated',['id' => $this->id]);
-                        }
-                }),
+                    ->modalHeading(\Str::headline(static::getResource()::getModelLabel()))
+                    ->modalWidth(config('timex.pages.modalWidth'))
+                    ->action(fn(array $data) => $this->updateOrCreate($data))
+                    ->extraModalActions([
+                        Action::makeModalAction('delete')
+                            ->color('danger')
+                            ->action('deleteEvent')
+                            ->cancel()
+                    ]),
                 Action::make('prev')
                     ->size('sm')
-                    ->icon('heroicon-o-chevron-left')
+                    ->icon(config('timex.pages.buttons.icons.previousMonth'))
                     ->extraAttributes(['class' => '-mr-2 -ml-1'])
-                    ->outlined()->disableLabel()
-                    ->action(function (){
-                        $this->emit('onPrevClick');
-//                        $this->getHeading();
-                }),
+                    ->outlined(config('timex.pages.buttons.outlined'))
+                    ->disableLabel()
+                    ->action(fn() => $this->emit('onPrevClick')),
                 Action::make('today')
                     ->size('sm')
-                    ->outlined()
+                    ->outlined(config('timex.pages.buttons.outlined'))
                     ->extraAttributes(['class' => '-ml-1 -mr-1'])
-                    ->label(fn() => \Carbon\Carbon::today()->format('d M'))
-                    ->action(function (){
-                        $this->emit('onTodayClick');
-                }),
+                    ->label(config('timex.pages.buttons.today'))
+                    ->action(fn() => $this->emit('onTodayClick')),
                 Action::make('next')
                     ->size('sm')
-                    ->icon('heroicon-o-chevron-right')
+                    ->icon(config('timex.pages.buttons.icons.nextMonth'))
                     ->extraAttributes(['class' => '-ml-2'])
-                    ->outlined()->disableLabel()
-                    ->action(function (){
-                        $this->emit('onNextClick');
-                }),
+                    ->outlined(config('timex.pages.buttons.outlined'))
+                    ->disableLabel()
+                    ->action(fn() => $this->emit('onNextClick')),
         ];
-    }
-
-    public function test()
-    {
-
-    }
-
-    protected function getTitle(): string
-    {
-        return Carbon::today()->isoFormat('dddd, D MMM');
-    }
-
-    public function getEventResource()
-    {
-        return static::$eventResource = config('timex.resources.event');
     }
 
     public static function getEvents(): array
     {
-        return Event::orderBy('startTime')->get()
-            ->map(function (Event $event){
+        return self::getModel()::orderBy('startTime')->get()
+            ->map(function ($event){
                 return EventItem::make($event->id)
                     ->subject($event->subject)
                     ->body($event->body)
-                    ->color($event->categories)
-                    ->category($event->categories)
-                    ->icon('heroicon-o-cake')
+                    ->color($event->category)
+                    ->category($event->category)
                     ->start(Carbon::create($event->start))
                     ->startTime(Carbon::createFromTimeString($event->startTime))
                     ->end(Carbon::create($event->end));
             })->toArray();
-//        return [
-//            EventItem::make(uuid_create())
-//            ->start(Carbon::today())
-//            ->end(Carbon::today())
-//            ->subject('Meeting subject')
-//            ->body('Meeting body'),
-//
-//            EventItem::make(uuid_create())
-//                ->start(Carbon::today())
-//                ->end(Carbon::today())
-//                ->subject('Meeting subject 3')
-//                ->body('Meeting body 3')
-//                ->color('success'),
-//
-//            EventItem::make(uuid_create())
-//                ->start(Carbon::today())
-//                ->end(Carbon::today())
-//                ->subject('Meeting subject 4')
-//                ->body('Meeting body 4')
-//                ->color('danger'),
-//
-//            EventItem::make(uuid_create())
-//                ->start(Carbon::today())
-//                ->end(Carbon::today())
-//                ->subject('Meeting subject 5')
-//                ->body('Meeting body 5')
-//                ->color('warning'),
-//            EventItem::make(uuid_create())
-//                ->start(Carbon::today()->subMonth()->subDay())
-//                ->end(Carbon::today()->subMonth()->subDay())
-//                ->subject('Meeting subject 6')
-//                ->body('Meeting body 6')
-//                ->color('success'),
-//            EventItem::make(uuid_create())
-//                ->start(Carbon::today()->subMonth()->subDays(2))
-//                ->end(Carbon::today()->subMonth()->subDays(2))
-//                ->subject('Meeting subject 7')
-//                ->body('Meeting body 7')
-//                ->color('success'),
-//            EventItem::make(uuid_create())
-//                ->start(Carbon::today()->addMonths(2)->addDays(3))
-//                ->end(Carbon::today()->addMonths(2)->addDays(3))
-//                ->subject('Meeting subject 8')
-//                ->body('Meeting body 8')
-//                ->color('success'),
-//
-//            EventItem::make(uuid_create())
-//            ->start(Carbon::tomorrow())
-//            ->end(Carbon::tomorrow())
-//            ->subject('Meeting subject 2')
-//            ->body('Meeting body 2')
-//            ->color('secondary'),
-//
-//            EventItem::make(uuid_create())
-//            ->start(Carbon::today()->addDays(20))
-//            ->end(Carbon::today()->addDays(20))
-//            ->subject('Meeting subject 3')
-//            ->color('danger')
-//        ];
     }
 
 
+    public function setNullRecord()
+    {
+        $this->record = null;
+    }
+
+    public function updateOrCreate($data)
+    {
+        if ($data['organizer'] == null){
+            $this->getModel()::query()->create([...$data,'organizer' => \Auth::id()]);
+        }else{
+            $this->getFormModel()::query()->find($this->getFormModel()->id)->update($data);
+        }
+        $this->dispatEventUpdates();
+    }
+
+    public function deleteEvent()
+    {
+        $this->getFormModel()->delete();
+        $this->dispatEventUpdates();
+    }
+
+    public function dispatEventUpdates(): void
+    {
+        $this->emit('modelUpdated',['id' => $this->id]);
+        $this->record = null;
+    }
 
     public function onEventClick($eventID)
     {
-        $event = new Fluent(Event::find($eventID)->getAttributes());
-        self::$eventData = $event->toArray();
-        self::$eventHeading = "Edit event: ".$event->subject;
+        $this->record = $eventID;
+        $event = $this->getFormModel()->getAttributes();
+        self::$eventData = $event;
         $this->mountAction('openCreateModal');
     }
 
