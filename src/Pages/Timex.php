@@ -151,7 +151,7 @@ class Timex extends Page
                     ->color($event->category)
                     ->category($event->category)
                     ->start(Carbon::create($event->start))
-                    ->startTime(Carbon::createFromTimeString($event->startTime))
+                    ->startTime($event->startTime)
                     ->end(Carbon::create($event->end));
             })->toArray();
     }
@@ -181,6 +181,7 @@ class Timex extends Page
     public function dispatEventUpdates(): void
     {
         $this->emit('modelUpdated',['id' => $this->id]);
+        $this->emit('updateWidget',['id' => $this->id]);
         $this->record = null;
     }
 

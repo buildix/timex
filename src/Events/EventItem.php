@@ -13,8 +13,8 @@ class EventItem
     public $start;
     public $end;
     public ?string $color = null;
-    public Carbon $startTime;
-    public Carbon $endTime;
+    public $startTime;
+    public $endTime;
     protected $type;
     protected ?string $icon = null;
     protected ?string $category = null;
@@ -43,7 +43,7 @@ class EventItem
 
         return $this;
     }
-    
+
     public function getCategory(): ?string
     {
         return $this->category;
@@ -56,14 +56,14 @@ class EventItem
         return $this;
     }
 
-    public function startTime(Carbon $startTime):static
+    public function startTime($startTime):static
     {
         $this->startTime = $startTime;
 
         return $this;
     }
 
-    public function getStartTime(): Carbon
+    public function getStartTime()
     {
         return $this->startTime;
     }

@@ -7,8 +7,12 @@ use Buildix\Timex\Calendar\Day;
 use Buildix\Timex\Calendar\Event;
 use Buildix\Timex\Calendar\Month;
 use Buildix\Timex\Calendar\Week;
+use Buildix\Timex\Widgets\Mini\DayWidget;
+use Buildix\Timex\Widgets\Mini\EventWidget;
+use Filament\Facades\Filament;
 use Filament\PluginServiceProvider;
 use Illuminate\Contracts\Container\Container;
+use Illuminate\View\View;
 use Livewire\Livewire;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
@@ -41,6 +45,8 @@ class TimexServiceProvider extends PluginServiceProvider
         Livewire::component('timex-week',Week::class);
         Livewire::component('timex-day',Day::class);
         Livewire::component('timex-event',Event::class);
+        Livewire::component('timex-event-widget',EventWidget::class);
+        Livewire::component('timex-day-widget',DayWidget::class);
 
         $this->registerConfig();
 
@@ -50,6 +56,13 @@ class TimexServiceProvider extends PluginServiceProvider
             $factory->add('timex', array_merge(['path' => __DIR__.'/../resources/svg'], $config));
         });
 
+        if (config('timex.mini.isMiniCalendarEnabled')){
+            Filament::registerRenderHook(
+                'global-search.start',
+                fn(): View => \view('timex::layout.heading')
+            );
+        }
+        
         parent::boot();
     }
 

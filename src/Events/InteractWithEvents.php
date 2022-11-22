@@ -46,6 +46,7 @@ trait InteractWithEvents
             'start' => Carbon::createFromTimestamp($data['toDate'])
         ]);
         $this->emit('modelUpdated',['id' => $this->id]);
+        $this->emit('updateWidget',['id' => $this->id]);
     }
 
 

@@ -27,6 +27,7 @@ return [
         'isMiniCalendarEnabled' => true,
         'isDayViewHidden' => false,
         'isNextMeetingViewHidden' => false,
+        'noEventsTitle' => 'No upcoming events'
     ],
 
     /*

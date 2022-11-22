@@ -13,6 +13,7 @@
         'h-full ml-1 rounded-md',
         'bg-'.$color.'-600' => $color != 'secondary',
         'bg-gray-600' => $color == 'secondary',
+        'hidden' => $isWidgetEvent
 ])>
 
     </span>
@@ -20,10 +21,10 @@
         @class([
         'grid grid-cols-7 items-center text-left text-xs font-light cursor-pointer',
         'w-full rounded ml-1 mr-1',
-        'hover:bg-'.$color.'-600/20' => $color !== 'secondary',
-        'hover:bg-gray-600/20' => $color == 'secondary',
-        'text-white hover:text-'.$color.'-500 bg-'.$color.'-500' => $color != 'secondary' && !$isInPast,
-        'text-white hover:text-gray-500 bg-gray-500' => $color == 'secondary' && !$isInPast,
+        'hover:bg-'.$color.'-600/20' => $color !== 'secondary' && !$isWidgetEvent,
+        'hover:bg-gray-600/20' => $color == 'secondary' && !$isWidgetEvent,
+        'text-white hover:text-'.$color.'-500 bg-'.$color.'-500' => $color != 'secondary' && !$isInPast && !$isWidgetEvent,
+        'text-white hover:text-gray-500 bg-gray-500' => $color == 'secondary' && !$isInPast && !$isWidgetEvent,
         ])
     >
 
@@ -31,17 +32,24 @@
         <div class="mr-1 ml-1 col-span-1">
             <x-dynamic-component
                 :component="$icon"
-                class="h-4 w-4 shrink-0"
+                @class([
+                'h-4 w-4 shrink-0',
+                'text-'.$color.'-500' => $isWidgetEvent && $color !== 'secondary',
+                'text-gray-500' => $isWidgetEvent && $color == 'secondary',
+                ])
             />
         </div>
         @endif
         <div @class([
                 'mr-1 ml-1 col-span-5 truncate' => !$icon,
-                'col-span-4 truncate' => $icon
+                'col-span-4 truncate' => $icon,
         ])>
             {{$subject}}
         </div>
-        <div class="col-span-2 ml-2">
+        <div @class([
+                'col-span-2 ml-2' => !$isWidgetEvent,
+                'col-span-2 ml-4' => $isWidgetEvent
+            ])>
             {{\Carbon\Carbon::parse($startTime)->isoFormat('H:mm')}}
         </div>
     </div>
