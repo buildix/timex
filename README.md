@@ -6,7 +6,8 @@
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/buildix/timex.svg?style=flat-square)](https://packagist.org/packages/buildix/timex)
 [![Total Downloads](https://img.shields.io/packagist/dt/buildix/timex.svg?style=flat-square)](https://packagist.org/packages/buildix/timex)
 
-![main](https://user-images.githubusercontent.com/2136612/203250400-8ba51fc4-8d37-49d8-a125-6ab294c01d94.png)
+<img width="1792" alt="timex-main" src="https://user-images.githubusercontent.com/2136612/203271680-8907004a-dd29-4adb-8de8-05cac681ba63.png">
+
 
 ## Installation
 
@@ -157,8 +158,6 @@ return [
 ## Usage
 
 After your fresh installation, TIMEX calendar is working out of the box (make sure to run migration) and start managing your time.
-![main-1](https://user-images.githubusercontent.com/2136612/203252427-75d182f5-e60f-4657-bf28-3635bba24045.png)
-![main-2](https://user-images.githubusercontent.com/2136612/203252452-dd0f8358-8815-4b9a-8968-d9d00aa7894c.png)
 
 ### EventItem
 
@@ -183,6 +182,10 @@ getEvents(): array {
 
 ### Event resource
 
+<img width="1792" alt="event-light" src="https://user-images.githubusercontent.com/2136612/203271883-cd9c9114-74b0-4c2a-8aa8-79d986523bb4.png">
+<img width="1792" alt="event-dark" src="https://user-images.githubusercontent.com/2136612/203271937-9d746cb7-2043-428c-a780-b14e65a68645.png">
+
+
 By default TiMEX register `EventResource` to your navigation panel, if you would like to disable it, simply set `shouldRegisterNavigation` to `false` in TiMEX config:
 Also, you can change slug, icon, and the Filament resource itself
 
@@ -197,6 +200,10 @@ Also, you can change slug, icon, and the Filament resource itself
 
 Package comes with pre-installed Filament page with all necessary configurations. 
 If you need to change label naming, slug, navigation group, etc, go ahead to TiMEX config. 
+
+<img width="1792" alt="timex-main-dark" src="https://user-images.githubusercontent.com/2136612/203272109-3ec01efa-dd3f-4d4d-9b5b-f7f8a8651629.png">
+<img width="1792" alt="timex-light" src="https://user-images.githubusercontent.com/2136612/203272127-d5bf52d8-ca4f-4716-bac3-3da9c9584041.png">
+<img width="1792" alt="timex-dark" src="https://user-images.githubusercontent.com/2136612/203272145-28d209ed-4230-4a79-a2b2-0c90c9028bfc.png">
 
 
 ### Dynamic icon set
