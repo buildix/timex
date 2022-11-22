@@ -1,7 +1,7 @@
 ![timex-logo](https://user-images.githubusercontent.com/2136612/202689778-eb013a03-b0fa-4c0e-941c-7d999c09fd6f.jpeg)
 
 
-## TIMEX - calendar plugin for filament
+## TIMEX - calendar plugin for [filament](https://github.com/filamentphp/filament)
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/buildix/timex.svg?style=flat-square)](https://packagist.org/packages/buildix/timex)
 [![Total Downloads](https://img.shields.io/packagist/dt/buildix/timex.svg?style=flat-square)](https://packagist.org/packages/buildix/timex)
@@ -207,6 +207,8 @@ If you need to change label naming, slug, navigation group, etc, go ahead to TiM
 
 
 ### Dynamic icon set
+<img width="1015" alt="timex-icons" src="https://user-images.githubusercontent.com/2136612/203330528-a8cbc30f-26dd-4fd2-a2fc-87a9ae106fd8.png">
+
 
 TiMEX comes with two custom icons:
 1. First one is static, represents TiMEX branding
@@ -245,6 +247,10 @@ You may change the names of weekdays on your calendar by changing TiMEX config `
 ```
 
 To change Carbon locale, make sure to update your `app.php` locale settings.
+
+## Demo
+
+[![buildix-timex demo](https://img.youtube.com/vi/ojtwJvEU-RI/0.jpg)](https://www.youtube.com/watch?v=ojtwJvEU-RI)
 
 ## Credits
 
