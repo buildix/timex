@@ -246,6 +246,10 @@ You may change the names of weekdays on your calendar by changing TiMEX config `
 
 To change Carbon locale, make sure to update your `app.php` locale settings.
 
+## Demo
+
+[![buildix-timex demo](https://img.youtube.com/vi/ojtwJvEU-RI/0.jpg)](https://www.youtube.com/watch?v=ojtwJvEU-RI)
+
 ## Credits
 
 - [mikrosmile](https://github.com/mikrosmile)
