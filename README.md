@@ -6,6 +6,8 @@
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/buildix/timex.svg?style=flat-square)](https://packagist.org/packages/buildix/timex)
 [![Total Downloads](https://img.shields.io/packagist/dt/buildix/timex.svg?style=flat-square)](https://packagist.org/packages/buildix/timex)
 
+![main](https://user-images.githubusercontent.com/2136612/203250400-8ba51fc4-8d37-49d8-a125-6ab294c01d94.png)
+
 ## Installation
 
 You can install the package via composer:
@@ -155,7 +157,8 @@ return [
 ## Usage
 
 After your fresh installation, TIMEX calendar is working out of the box (make sure to run migration) and start managing your time.
-
+![main-1](https://user-images.githubusercontent.com/2136612/203252427-75d182f5-e60f-4657-bf28-3635bba24045.png)
+![main-2](https://user-images.githubusercontent.com/2136612/203252452-dd0f8358-8815-4b9a-8968-d9d00aa7894c.png)
 
 ### EventItem
 
