@@ -1,17 +1,18 @@
 {
     "name": "buildix/timex",
-    "description": "This is my package timex",
+    "description": "Calendar plugin for filamentphp",
     "keywords": [
         "Buildix",
         "laravel",
-        "timex"
+        "timex",
+        "filament"
     ],
     "homepage": "https://github.com/buildix/timex",
     "license": "MIT",
     "authors": [
         {
             "name": "Mikhail Karzanov",
-            "email": "mikrosmile@icloud.com",
+            "email": "",
             "role": "Developer"
         }
     ],
