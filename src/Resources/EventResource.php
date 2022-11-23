@@ -36,12 +36,12 @@ class EventResource extends Resource
 
     public static function getModelLabel(): string
     {
-        return config('timex.models.label');
+        return __('timex::timex.model.label');
     }
 
     public static function getPluralModelLabel(): string
     {
-        return config('timex.models.pluralLabel');
+        return __('timex::timex.model.pluralLabel');
     }
 
     public static function getSlug(): string
@@ -69,15 +69,23 @@ class EventResource extends Resource
         return $form
             ->schema([
                 Hidden::make('organizer'),
-                TextInput::make('subject')->required()->columnSpanFull(),
-                RichEditor::make('body')->columnSpanFull(),
-                Select::make('category')->columnSpanFull()
+                TextInput::make('subject')
+                    ->label(__('timex::timex.event.subject'))
+                    ->required()
+                    ->columnSpanFull(),
+                RichEditor::make('body')
+                    ->label(__('timex::timex.event.body'))
+                    ->columnSpanFull(),
+                Select::make('category')
+                    ->label(__('timex::timex.event.category'))
+                    ->columnSpanFull()
                     ->searchable()
                     ->preload()
                     ->options(config('timex.categories.labels'))
                     ->columnSpanFull(),
                 Grid::make(3)->schema([
                     Toggle::make('isAllDay')
+                        ->label(__('timex::timex.event.allDay'))
                         ->columnSpanFull()
                         ->reactive()
                         ->afterStateUpdated(function ($set, callable $get, $state){
@@ -92,6 +100,7 @@ class EventResource extends Resource
                             }
                         }),
                     DatePicker::make('start')
+                        ->label(__('timex::timex.event.start'))
                         ->inlineLabel()
                         ->columnSpan(2)
                         ->default(today())
@@ -123,6 +132,7 @@ class EventResource extends Resource
                             return $get('isAllDay');
                         }),
                     DatePicker::make('end')
+                        ->label(__('timex::timex.event.end'))
                         ->inlineLabel()
                         ->columnSpan(2)
                         ->default(today())
@@ -151,13 +161,22 @@ class EventResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('subject'),
-                TextColumn::make('body')->wrap()->limit(100),
-                TextColumn::make('start')->date()
+                TextColumn::make('subject')
+                ->label(__('timex::timex.event.subject')),
+                TextColumn::make('body')
+                    ->label(__('timex::timex.event.body'))
+                    ->wrap()
+                    ->limit(100),
+                TextColumn::make('start')
+                    ->label(__('timex::timex.event.start'))
+                    ->date()
                     ->description(fn($record) => $record->startTime),
-                TextColumn::make('end')->date()
+                TextColumn::make('end')
+                    ->label(__('timex::timex.event.end'))
+                    ->date()
                     ->description(fn($record)=> $record->endTime),
                 BadgeColumn::make('category')
+                    ->label(__('timex::timex.event.category'))
                     ->enum(config('timex.categories.labels'))
                     ->colors(config('timex.categories.colors'))
             ])->defaultSort('start');

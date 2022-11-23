@@ -39,6 +39,11 @@ trait TimexTrait
     {
         return $this->endOfWeek = config('timex.week.end');;
     }
-    
+
+    public function getPageClass()
+    {
+        return config('timex.pages.timex');
+    }
+
 
 }

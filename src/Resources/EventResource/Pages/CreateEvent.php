@@ -25,12 +25,16 @@ class CreateEvent extends CreateRecord
             ->schema([
                 Grid::make(3)->schema([
                     Card::make([
-                        TextInput::make('subject'),
+                        TextInput::make('subject')
+                        ->label(__('timex::timex.event.subject'))
+                        ->required(),
                         RichEditor::make('body')
+                        ->label(__('timex::timex.event.body'))
                     ])->columnSpan(2),
                     Card::make([
                         Grid::make(3)->schema([
                             Toggle::make('isAllDay')
+                                ->label(__('timex::timex.event.allDay'))
                                 ->columnSpanFull()
                                 ->reactive()
                                 ->afterStateUpdated(function ($set, callable $get, $state){
@@ -45,6 +49,8 @@ class CreateEvent extends CreateRecord
                                     }
                                 }),
                             DatePicker::make('start')
+                                ->label(__('timex::timex.event.start'))
+                                ->required()
                                 ->inlineLabel()
                                 ->columnSpan(2)
                                 ->default(today())
@@ -68,6 +74,7 @@ class CreateEvent extends CreateRecord
                                     return $get('isAllDay');
                                 }),
                             DatePicker::make('end')
+                                ->label(__('timex::timex.event.end'))
                                 ->inlineLabel()
                                 ->columnSpan(2)
                                 ->default(today())
@@ -87,7 +94,9 @@ class CreateEvent extends CreateRecord
                                 ->disabled(function ($get){
                                     return $get('isAllDay');
                                 }),
-                            Select::make('category')->columnSpanFull()
+                            Select::make('category')
+                                ->label(__('timex::timex.event.category'))
+                                ->columnSpanFull()
                                 ->options(config('timex.categories.labels'))
                         ])
                     ])->columnSpan(1)
