@@ -36,18 +36,18 @@ class Timex extends Page
 
     protected static function getNavigationLabel(): string
     {
-        return config('timex.pages.label.navigation');
+        return Carbon::today()->isoFormat(config('timex.pages.label.navigation'));
     }
 
     protected function getTitle(): string
     {
-        return config('timex.pages.label.title');
+        return Carbon::today()->isoFormat(config('timex.pages.label.title'));
     }
 
     protected function getBreadcrumbs(): array
     {
         return [
-            config('timex.pages.label.breadcrumbs')
+            Carbon::today()->isoFormat(config('timex.pages.label.breadcrumbs'))
         ];
     }
 
@@ -58,7 +58,7 @@ class Timex extends Page
 
     protected static function getNavigationIcon(): string
     {
-        return config('timex.pages.icon.static') ? config('timex.pages.icon.timex') : config('timex.pages.icon.day');
+        return config('timex.pages.icon.static') ? config('timex.pages.icon.timex') : config('timex.pages.icon.day').Carbon::today()->day;
     }
 
     public static function getSlug(): string
@@ -101,7 +101,7 @@ class Timex extends Page
                     ->label($this->monthName),
                 Action::make('openCreateModal')
                     ->label(__('filament::resources/pages/create-record.title',
-                            ['label' => \Str::headline(static::getResource()::getModelLabel())]))
+                            ['label' => Str::lower(__('timex::timex.model.label'))]))
                     ->icon(config('timex.pages.buttons.icons.createEvent'))
                     ->size('sm')
                     ->outlined(config('timex.pages.buttons.outlined'))
@@ -109,11 +109,12 @@ class Timex extends Page
                     ->extraAttributes(['class' => '-mr-2'])
                     ->form($this->getResourceForm(2)->getSchema())
                     ->mountUsing(fn (Forms\ComponentContainer $form) => $form->fill(self::$eventData))
-                    ->modalHeading(\Str::headline(static::getResource()::getModelLabel()))
+                    ->modalHeading(__('timex::timex.model.label'))
                     ->modalWidth(config('timex.pages.modalWidth'))
                     ->action(fn(array $data) => $this->updateOrCreate($data))
                     ->extraModalActions([
                         Action::makeModalAction('delete')
+                            ->label(__('timex::timex.modal.delete'))
                             ->color('danger')
                             ->action('deleteEvent')
                             ->cancel()
@@ -129,7 +130,7 @@ class Timex extends Page
                     ->size('sm')
                     ->outlined(config('timex.pages.buttons.outlined'))
                     ->extraAttributes(['class' => '-ml-1 -mr-1'])
-                    ->label(config('timex.pages.buttons.today'))
+                    ->label(Carbon::today()->isoFormat(config('timex.pages.buttons.today')))
                     ->action(fn() => $this->emit('onTodayClick')),
                 Action::make('next')
                     ->size('sm')

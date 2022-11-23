@@ -18,7 +18,7 @@ return [
     |--------------------------------------------------------------------------
     | TIMEX Mini widget
     |--------------------------------------------------------------------------
-    | * - Not available on the release. Subscribe for future updates
+    |
     | You can disable or enable individually widgets or entirely the whole view.
     |
     */
@@ -65,15 +65,15 @@ return [
         'icon' => [
             'static' => true,
             'timex' => 'timex-timex',
-            'day' => 'timex-day-'.Carbon::today()->day
+            'day' => 'timex-day-'
         ],
         'label' => [
-            'navigation' => Carbon::today()->isoFormat('dddd, D MMM'),
-            'breadcrumbs' => Carbon::today()->isoFormat('dddd, D MMM'),
-            'title' => Carbon::today()->isoFormat('dddd, D MMM'),
+            'navigation' => 'dddd, D MMM',
+            'breadcrumbs' => 'dddd, D MMM',
+            'title' => 'dddd, D MMM'
         ],
         'buttons' => [
-            'today' => \Carbon\Carbon::today()->format('d M'),
+            'today' => 'D MMM',
             'outlined' => true,
             'icons' => [
                 'previousMonth' => 'heroicon-o-chevron-left',

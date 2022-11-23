@@ -2,10 +2,12 @@
 
 namespace Buildix\Timex\Widgets\Mini;
 
+use Buildix\Timex\Traits\TimexTrait;
 use Livewire\Component;
 
 class DayWidget extends Component
 {
+    use TimexTrait;
     public $monthName;
     public $day;
     public $dayName;
@@ -20,5 +22,10 @@ class DayWidget extends Component
     public function render()
     {
         return view('timex::widgets.mini.day-widget');
+    }
+
+    public function openCalendar()
+    {
+        return \Redirect::to(config('filament.path').'/'.$this->getPageClass()::getSlug());
     }
 }

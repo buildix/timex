@@ -1,7 +1,8 @@
 <div id="timex--day-widget"
+     wire:click="openCalendar()"
     @class([
         'group cursor-pointer text-center rounded-lg bg-gray-400/10',
-        'dark:bg-gray-700'
+        'hover:bg-gray-500/10 dark:bg-gray-700'
         ])
     style="width: 4rem;">
     <div class="text-xs font-medium text-primary-600">

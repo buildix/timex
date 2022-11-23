@@ -36,6 +36,7 @@ class TimexServiceProvider extends PluginServiceProvider
             ->hasConfigFile()
             ->hasViews()
             ->hasAssets()
+            ->hasTranslations()
             ->hasMigration('create_timex_tables');
     }
 
@@ -62,7 +63,7 @@ class TimexServiceProvider extends PluginServiceProvider
                 fn(): View => \view('timex::layout.heading')
             );
         }
-        
+
         parent::boot();
     }
 
