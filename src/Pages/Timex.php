@@ -118,27 +118,44 @@ class Timex extends Page
                             ->color('danger')
                             ->action('deleteEvent')
                             ->cancel()
-                    ]),
-                Action::make('prev')
-                    ->size('sm')
-                    ->icon(config('timex.pages.buttons.icons.previousMonth'))
-                    ->extraAttributes(['class' => '-mr-2 -ml-1'])
-                    ->outlined(config('timex.pages.buttons.outlined'))
-                    ->disableLabel()
-                    ->action(fn() => $this->emit('onPrevClick')),
-                Action::make('today')
-                    ->size('sm')
-                    ->outlined(config('timex.pages.buttons.outlined'))
-                    ->extraAttributes(['class' => '-ml-1 -mr-1'])
-                    ->label(Carbon::today()->isoFormat(config('timex.pages.buttons.today')))
-                    ->action(fn() => $this->emit('onTodayClick')),
-                Action::make('next')
-                    ->size('sm')
-                    ->icon(config('timex.pages.buttons.icons.nextMonth'))
-                    ->extraAttributes(['class' => '-ml-2'])
-                    ->outlined(config('timex.pages.buttons.outlined'))
-                    ->disableLabel()
-                    ->action(fn() => $this->emit('onNextClick')),
+                        ]),
+                        Action::make('prev-year')
+                            ->size('sm')
+                            ->icon(config('timex.pages.buttons.icons.prevYear'))
+                            ->extraAttributes(['class' => '-ml-2'])
+                            ->outlined(config('timex.pages.buttons.outlined'))
+                            ->disableLabel()
+                            ->hidden(config('timex.pages.buttons.hideYearNavigation'))
+                            ->action(fn() => $this->emit('onPreviousYearClick')),
+                        Action::make('prev')
+                            ->size('sm')
+                            ->icon(config('timex.pages.buttons.icons.previousMonth'))
+                            ->extraAttributes(['class' => '-mr-2 -ml-1'])
+                            ->outlined(config('timex.pages.buttons.outlined'))
+                            ->disableLabel()
+                            ->action(fn() => $this->emit('onPrevClick')),
+                        Action::make('today')
+                            ->size('sm')
+                            ->outlined(config('timex.pages.buttons.outlined'))
+                            ->extraAttributes(['class' => '-ml-1 -mr-1'])
+                            ->label(Carbon::today()->isoFormat(config('timex.pages.buttons.today')))
+                            ->action(fn() => $this->emit('onTodayClick')),
+                        Action::make('next')
+                            ->size('sm')
+                            ->icon(config('timex.pages.buttons.icons.nextMonth'))
+                            ->extraAttributes(['class' => '-ml-2'])
+                            ->outlined(config('timex.pages.buttons.outlined'))
+                            ->disableLabel()
+                            ->action(fn() => $this->emit('onNextClick')),
+                    Action::make('next-year')
+                            ->size('sm')
+                            ->icon(config('timex.pages.buttons.icons.nextYear'))
+                            ->extraAttributes(['class' => '-ml-2'])
+                            ->outlined(config('timex.pages.buttons.outlined'))
+                            ->disableLabel()
+                            ->hidden(config('timex.pages.buttons.hideYearNavigation'))
+                            ->action(fn() => $this->emit('onNextYearClick')),
+
         ];
     }
 

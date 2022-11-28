@@ -75,7 +75,10 @@ return [
         'buttons' => [
             'today' => 'D MMM',
             'outlined' => true,
+            'hideYearNavigation' => false,
             'icons' => [
+                'previousYear' => 'heroicon-o-chevron-double-left',
+                'nextYear' => 'heroicon-o-chevron-double-right',
                 'previousMonth' => 'heroicon-o-chevron-left',
                 'nextMonth' => 'heroicon-o-chevron-right',
                 'createEvent' => 'heroicon-o-plus'
