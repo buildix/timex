@@ -8,7 +8,7 @@ return new class extends Migration
 {
     public function up()
     {
-        Schema::create('timex_events', function (Blueprint $table) {
+        Schema::create(config('timex.tables.event.name'), function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->longText('body')->nullable();
             $table->string('category')->nullable();
@@ -16,12 +16,14 @@ return new class extends Migration
             $table->time('endTime');
             $table->boolean('isAllDay')->default(false);
             $table->foreignUuid('organizer');
+            $table->json('participants')->nullable();
             $table->longText('subject');
             $table->date('start');
             $table->time('startTime');
 
             $table->timestamps();
         });
+
     }
 
     /**
@@ -31,6 +33,6 @@ return new class extends Migration
     */
     public function down()
     {
-        Schema::dropIfExists('timex_events');
+        Schema::dropIfExists(config('timex.tables.event.name'));
     }
 };

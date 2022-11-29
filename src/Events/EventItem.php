@@ -18,6 +18,8 @@ class EventItem
     protected $type;
     protected ?string $icon = null;
     protected ?string $category = null;
+    public $organizer;
+    public $participants = [];
 
 
     final public function __construct($eventID)
@@ -97,6 +99,20 @@ class EventItem
 
     }
 
+    public function organizer(string $organizer)
+    {
+        $this->organizer = $organizer;
+
+        return $this;
+    }
+
+    public function participants(?array $participants)
+    {
+        $this->participants = $participants;
+
+        return $this;
+    }
+
 
     public function getColor(): ?string
     {
@@ -111,6 +127,11 @@ class EventItem
     public function getBody(): ?string
     {
         return $this->body;
+    }
+
+    public function getOrganizer()
+    {
+        return $this->organizer;
     }
 
     public function getStart()

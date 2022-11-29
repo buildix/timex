@@ -21,6 +21,7 @@ use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Support\Fluent;
 use Illuminate\Support\Str;
+use mysql_xdevapi\Collection;
 use function Filament\Support\get_model_label;
 
 class Timex extends Page
@@ -36,18 +37,18 @@ class Timex extends Page
 
     protected static function getNavigationLabel(): string
     {
-        return Carbon::today()->isoFormat(config('timex.pages.label.navigation'));
+        return config('timex.pages.label.navigation.static') ? __('timex::timex.labels.navigation') : self::getDynamicLabel('navigation');
     }
 
     protected function getTitle(): string
     {
-        return Carbon::today()->isoFormat(config('timex.pages.label.title'));
+        return config('timex.pages.label.title.static') ? __('timex::timex.labels.title') : self::getDynamicLabel('title');
     }
 
     protected function getBreadcrumbs(): array
     {
         return [
-            Carbon::today()->isoFormat(config('timex.pages.label.breadcrumbs'))
+            config('timex.pages.label.breadcrumbs.static') ? __('timex::timex.labels.breadcrumbs') : self::getDynamicLabel('breadcrumbs')
         ];
     }
 
@@ -108,7 +109,6 @@ class Timex extends Page
                     ->slideOver()
                     ->extraAttributes(['class' => '-mr-2'])
                     ->form($this->getResourceForm(2)->getSchema())
-                    ->mountUsing(fn (Forms\ComponentContainer $form) => $form->fill(self::$eventData))
                     ->modalHeading(__('timex::timex.model.label'))
                     ->modalWidth(config('timex.pages.modalWidth'))
                     ->action(fn(array $data) => $this->updateOrCreate($data))
@@ -117,6 +117,9 @@ class Timex extends Page
                             ->label(__('timex::timex.modal.delete'))
                             ->color('danger')
                             ->action('deleteEvent')
+                            ->visible(function (){
+                                return $this->mountedActionData['organizer'] == \Auth::id() ? true : ($this->mountedActionData['organizer'] != \Auth::id() ? false : true);
+                            })
                             ->cancel()
                     ]),
                 Action::make('prev')
@@ -130,7 +133,7 @@ class Timex extends Page
                     ->size('sm')
                     ->outlined(config('timex.pages.buttons.outlined'))
                     ->extraAttributes(['class' => '-ml-1 -mr-1'])
-                    ->label(Carbon::today()->isoFormat(config('timex.pages.buttons.today')))
+                    ->label(config('timex.pages.buttons.today.static') ? __('timex::timex.labels.today') : self::getDynamicLabel('today'))
                     ->action(fn() => $this->emit('onTodayClick')),
                 Action::make('next')
                     ->size('sm')
@@ -144,7 +147,7 @@ class Timex extends Page
 
     public static function getEvents(): array
     {
-        return self::getModel()::orderBy('startTime')->get()
+        $events = self::getModel()::orderBy('startTime')->get()
             ->map(function ($event){
                 return EventItem::make($event->id)
                     ->subject($event->subject)
@@ -153,14 +156,14 @@ class Timex extends Page
                     ->category($event->category)
                     ->start(Carbon::create($event->start))
                     ->startTime($event->startTime)
-                    ->end(Carbon::create($event->end));
+                    ->end(Carbon::create($event->end))
+                    ->organizer($event->organizer)
+                    ->participants($event?->participants);
             })->toArray();
-    }
 
-
-    public function setNullRecord()
-    {
-        $this->record = null;
+        return collect($events)->filter(function ($event){
+            return $event->organizer == \Auth::id() || in_array(\Auth::id(), $event?->participants ?? []);
+        })->toArray();
     }
 
     public function updateOrCreate($data)
@@ -183,15 +186,17 @@ class Timex extends Page
     {
         $this->emit('modelUpdated',['id' => $this->id]);
         $this->emit('updateWidget',['id' => $this->id]);
-        $this->record = null;
     }
 
     public function onEventClick($eventID)
     {
         $this->record = $eventID;
         $event = $this->getFormModel()->getAttributes();
-        self::$eventData = $event;
         $this->mountAction('openCreateModal');
+        $this->getMountedActionForm()
+            ->fill([
+            ...$event,
+            'participants' => self::getFormModel()?->participants
+            ]);
     }
-
 }

@@ -17,6 +17,19 @@ return [
       'category' => 'Category',
       'allDay' => 'All day',
       'start' => 'Start',
-      'end' => 'End'
+      'end' => 'End',
+      'participants' => 'Participants'
+
+    ],
+    'event-list' => [
+        'author' => 'Author: :name',
+        'start' => 'Start: :start',
+        'end' => 'End: :end'
+    ],
+    'labels' => [
+      'navigation' => 'TiMEX',
+      'breadcrumbs' => 'TiMEX',
+      'title' => 'TiMEX',
+      'today' => 'Today',
     ],
 ];

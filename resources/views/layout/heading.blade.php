@@ -13,7 +13,7 @@
         'hidden' => $isEventViewHidden,
         'relative group max-w-md rounded-lg bg-gray-400/10 dark:bg-gray-700',
     ])
-    style="width: 16rem;">
+    style="min-width: 12rem; max-width: 12rem;">
         <livewire:timex-event-widget wire:key="{{rand()}}" wire:poll/>
     </div>
 </div>

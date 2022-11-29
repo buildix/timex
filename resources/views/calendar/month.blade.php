@@ -5,7 +5,7 @@
 
 <div class="w-full" id="timex-calendar">
     <div
-        wire:init="loaded" class="grid grid-cols-7 text-center bg-white dark:bg-gray-800 dark:border-gray-600 rounded-xl border">
+        wire:init="loaded" class="timex-month dark:bg-gray-800 dark:border-gray-600">
         @foreach(collect($this->getDays())['weekDays'] as $dayOfWeek)
             <div wire:key="{{rand()}}">
                 <livewire:timex-week
