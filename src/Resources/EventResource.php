@@ -232,6 +232,7 @@ class EventResource extends Resource
                                 return $get('isAllDay');
                             }),
                         Select::make('participants')
+                            ->label(__('timex::timex.event.participants'))
                             ->options(function (){
                                 return self::getUserModel()::all()
                                     ->pluck(self::getUserModelColumn('name'),self::getUserModelColumn('id'));
