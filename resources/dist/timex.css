@@ -1,0 +1,89 @@
+.timex-month {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    text-align: center;
+    background: white;
+    border-radius: 0.75rem;
+    border-width: 1px;
+}
+
+.timex-week-name {
+    font-weight: 500;
+    padding: 0.5rem;
+    height: 2.5rem;
+
+}
+
+.timex-week{
+    grid-auto-flow: column;
+}
+
+.timex-week-last {
+        border-bottom-right-radius: 0.75rem;
+}
+
+.timex-day {
+    align-items: center;
+    text-align: left;
+    height: 65px;
+}
+.timex-event {
+    visibility: hidden;
+}
+
+@media (min-width: 640px) {
+    .timex-day {
+        align-items: center;
+        text-align: left;
+        height: 65px;
+    }
+    .timex-event {
+        visibility: hidden;
+    }
+}
+
+@media (min-width: 768px) {
+    .timex-day {
+        align-items: center;
+        text-align: left;
+        height: 65px;
+    }
+    .timex-event {
+        visibility: hidden;
+    }
+}
+
+@media (min-width: 1024px) {
+    .timex-day {
+        align-items: center;
+        text-align: left;
+        height: 130px;
+    }
+    .timex-event {
+        visibility: visible;
+        height: 88px;
+    }
+}
+
+@media (min-width: 1280px) {
+    .timex-day {
+        align-items: center;
+        text-align: left;
+        height: 130px;
+    }
+    .timex-event {
+        visibility: visible;
+        height: 88px;
+    }
+}
+
+@media (min-width: 1536px) {
+    .timex-day {
+        align-items: center;
+        text-align: left;
+        height: 130px;
+    }
+    .timex-event {
+        height: 88px;
+    }
+}

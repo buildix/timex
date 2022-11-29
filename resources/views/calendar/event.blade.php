@@ -1,6 +1,17 @@
 @php
-    $icon = config('timex.categories.icons.'.$category);
-    $color = config('timex.categories.colors.'.$color);
+    $isMyEvent = $organizer == Auth::id();
+    $isModelEnabled = \Buildix\Timex\Traits\TimexTrait::isCategoryModelEnabled() && Str::isUuid($category);
+    if ($isModelEnabled){
+        $model = \Buildix\Timex\Traits\TimexTrait::getCategoryModel()::query()->find($category)->getAttributes();
+        $icon = $model[\Buildix\Timex\Traits\TimexTrait::getCategoryModelColumn('icon')];
+        $color = $model[\Buildix\Timex\Traits\TimexTrait::getCategoryModelColumn('color')];
+    }elseif (Str::isUuid($category) && !$isModelEnabled){
+        $icon = "";
+        $color = "primary";
+    }else{
+        $icon = config('timex.categories.icons.'.$category);
+        $color = config('timex.categories.colors.'.$color);
+    }
     $eventStart = \Carbon\Carbon::createFromTimestamp($start)->setHours(23);
     $isInPast =  $eventStart->isPast();
 @endphp
@@ -13,18 +24,19 @@
         'h-full ml-1 rounded-md',
         'bg-'.$color.'-600' => $color != 'secondary',
         'bg-gray-600' => $color == 'secondary',
-        'hidden' => $isWidgetEvent
+        'hidden' => $isWidgetEvent,
 ])>
 
     </span>
     <div
         @class([
+        'border border-'.$color.'-600 hover:text-'.$color.'-500' => !$isMyEvent && !$isWidgetEvent,
         'grid grid-cols-7 items-center text-left text-xs font-light cursor-pointer',
         'w-full rounded ml-1 mr-1',
         'hover:bg-'.$color.'-600/20' => $color !== 'secondary' && !$isWidgetEvent,
         'hover:bg-gray-600/20' => $color == 'secondary' && !$isWidgetEvent,
-        'text-white hover:text-'.$color.'-500 bg-'.$color.'-500' => $color != 'secondary' && !$isInPast && !$isWidgetEvent,
-        'text-white hover:text-gray-500 bg-gray-500' => $color == 'secondary' && !$isInPast && !$isWidgetEvent,
+        'text-white hover:text-'.$color.'-500 bg-'.$color.'-500' => $color != 'secondary' && !$isInPast && !$isWidgetEvent && $isMyEvent,
+        'text-white hover:text-gray-500 bg-gray-500' => $color == 'secondary' && !$isInPast && !$isWidgetEvent && $isMyEvent,
         ])
     >
 

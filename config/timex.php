@@ -27,7 +27,6 @@ return [
         'isMiniCalendarEnabled' => true,
         'isDayViewHidden' => false,
         'isNextMeetingViewHidden' => false,
-        'noEventsTitle' => 'No upcoming events'
     ],
 
     /*
@@ -40,8 +39,8 @@ return [
     */
 
     'week' => [
-        'start' => \Carbon\Carbon::MONDAY,
-        'end' =>  \Carbon\Carbon::SUNDAY
+        'start' => Carbon::MONDAY,
+        'end' =>  Carbon::SUNDAY
     ],
 
     'dayName' => 'minDayName', // minDayName or dayName or shortDayName
@@ -68,12 +67,24 @@ return [
             'day' => 'timex-day-'
         ],
         'label' => [
-            'navigation' => 'dddd, D MMM',
-            'breadcrumbs' => 'dddd, D MMM',
-            'title' => 'dddd, D MMM'
+            'navigation' => [
+                'static' => false,
+                'format' => 'dddd, D MMM',
+            ],
+            'breadcrumbs' => [
+                'static' => false,
+                'format' => 'dddd, D MMM',
+            ],
+            'title' => [
+              'static' => false,
+              'format' => 'dddd, D MMM',
+            ],
         ],
         'buttons' => [
-            'today' => 'D MMM',
+            'today' => [
+                'static' => false,
+                'format' => 'D MMM'
+            ],
             'outlined' => true,
             'icons' => [
                 'previousMonth' => 'heroicon-o-chevron-left',
@@ -91,8 +102,16 @@ return [
     ],
     'models' => [
         'event' => \Buildix\Timex\Models\Event::class,
-        'label' => 'Event',
-        'pluralLabel' => 'Events'
+        'users' => [
+            'model' => \App\Models\User::class,
+            'name' => 'name',
+            'id' => 'id',
+        ],
+    ],
+    'tables' => [
+        'event' => [
+            'name' => 'timex_events',
+        ],
     ],
 
     /*
@@ -100,13 +119,37 @@ return [
     | TIMEX Event categories
     |--------------------------------------------------------------------------
     |
-    | Categories names are used to define color.
+    | Categories names are used to define colors & icons.
     | Each represents default tailwind colors.
     | You may change as you wish, just make sure your color have -500 / -600 and etc variants
+    | You may also go for a custom Category model to define your labels, colors and icons
     |
     */
 
     'categories' => [
+            'isModelEnabled' => false,
+    /*
+    |--------------------------------------------------------------------------
+    | Category Model
+    |--------------------------------------------------------------------------
+    |
+    | You can define your custom Category model.
+    | Minimum and default columns in your DB should be: id, value, icon, color.
+    |
+    |
+    */
+            'model' => [
+                'class' => \App\Models\Category::class, // \App\Models\Category::class
+                'key' => 'id', // "id" is a DB column - you can change by any primary key
+                'value' => 'value', // "value" is a DB column - it used for Select options and displays on Resource page
+                'icon' => 'icon', // "icon" is a DB column - define here any heroicon- icon
+                'color' => 'color', // "color" is a DB column - default tailwindcss colors names like: primary / secondary / danger
+            ],
+        /*
+        |--------------------------------------------------------------------------
+        | Default TiMEX Categories
+        |--------------------------------------------------------------------------
+        */
             'labels' => [
                 'primary' => 'Primary category',
                 'secondary' => 'Secondary category',

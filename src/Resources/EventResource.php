@@ -2,6 +2,7 @@
 
 namespace Buildix\Timex\Resources;
 
+use Buildix\Timex\Traits\TimexTrait;
 use Carbon\Carbon;
 use Filament\Forms\Components\Card;
 use Filament\Forms\Components\DatePicker;
@@ -26,6 +27,7 @@ use Buildix\Timex\Resources\EventResource\Pages;
 
 class EventResource extends Resource
 {
+    use TimexTrait;
     protected static ?string $recordTitleAttribute = 'subject';
     protected $chosenStartTime;
 
@@ -76,12 +78,23 @@ class EventResource extends Resource
                 RichEditor::make('body')
                     ->label(__('timex::timex.event.body'))
                     ->columnSpanFull(),
+                Select::make('participants')
+                    ->label(__('timex::timex.event.participants'))
+                    ->options(function (){
+                        return self::getUserModel()::all()
+                            ->pluck(self::getUserModelColumn('name'),self::getUserModelColumn('id'));
+                    })
+                    ->multiple()->columnSpanFull()->hidden(!in_array('participants',\Schema::getColumnListing(self::getEventTableName()))),
                 Select::make('category')
                     ->label(__('timex::timex.event.category'))
                     ->columnSpanFull()
                     ->searchable()
                     ->preload()
-                    ->options(config('timex.categories.labels'))
+                    ->options(function (){
+                        return self::isCategoryModelEnabled() ? self::getCategoryModel()::all()
+                            ->pluck(self::getCategoryModelColumn('value'),self::getCategoryModelColumn('key'))
+                            : config('timex.categories.labels');
+                    })
                     ->columnSpanFull(),
                 Grid::make(3)->schema([
                     Toggle::make('isAllDay')
@@ -157,6 +170,87 @@ class EventResource extends Resource
             ]);
     }
 
+    public static function getCreateEditForm(): array
+    {
+        return [
+            Grid::make(3)->schema([
+                Card::make([
+                    TextInput::make('subject')
+                        ->label(__('timex::timex.event.subject'))
+                        ->required(),
+                    RichEditor::make('body')
+                        ->label(__('timex::timex.event.body')),
+                ])->columnSpan(2),
+                Card::make([
+                    Grid::make(3)->schema([
+                        Toggle::make('isAllDay')
+                            ->label(__('timex::timex.event.allDay'))
+                            ->columnSpanFull()
+                            ->reactive()
+                            ->afterStateUpdated(function ($set, callable $get, $state){
+                                $start = today()->setHours(0)->setMinutes(0);
+                                $end = today()->setHours(23)->setMinutes(59);
+                                if ($state == true){
+                                    $set('startTime',$start);
+                                    $set('endTime',$end);
+                                }else{
+                                    $set('startTime',now()->setMinutes(0)->addHour());
+                                    $set('endTime',now()->setMinutes(0)->addHour()->addMinutes(30));
+                                }
+                            }),
+                        DatePicker::make('start')
+                            ->label(__('timex::timex.event.start'))
+                            ->inlineLabel()
+                            ->columnSpan(2)
+                            ->default(today())
+                            ->minDate(today())
+                            ->firstDayOfWeek(config('timex.week.start')),
+                        TimePicker::make('startTime')
+                            ->withoutSeconds()
+                            ->disableLabel()
+                            ->default(now()->setMinutes(0)->addHour())
+                            ->reactive()
+                            ->afterStateUpdated(function ($set,$state){
+                                $set('endTime',Carbon::parse($state)->addMinutes(30));
+                            })
+                            ->disabled(function ($get){
+                                return $get('isAllDay');
+                            }),
+                        DatePicker::make('end')
+                            ->label(__('timex::timex.event.end'))
+                            ->inlineLabel()
+                            ->columnSpan(2)
+                            ->default(today())
+                            ->minDate(today())
+                            ->firstDayOfWeek(config('timex.week.start')),
+                        TimePicker::make('endTime')
+                            ->withoutSeconds()
+                            ->disableLabel()
+                            ->reactive()
+                            ->default(now()->setMinutes(0)->addHour()->addMinutes(30))
+                            ->disabled(function ($get){
+                                return $get('isAllDay');
+                            }),
+                        Select::make('participants')
+                            ->options(function (){
+                                return self::getUserModel()::all()
+                                    ->pluck(self::getUserModelColumn('name'),self::getUserModelColumn('id'));
+                            })
+                            ->multiple()->columnSpanFull()->hidden(!in_array('participants',\Schema::getColumnListing(self::getEventTableName()))),
+                        Select::make('category')
+                            ->label(__('timex::timex.event.category'))
+                            ->columnSpanFull()
+                            ->options(function (){
+                                return self::isCategoryModelEnabled() ? self::getCategoryModel()::all()
+                                    ->pluck(self::getCategoryModelColumn('value'),self::getCategoryModelColumn('key'))
+                                    : config('timex.categories.labels');
+                            })
+                    ])
+                ])->columnSpan(1)
+            ]),
+        ];
+    }
+
     public static function table(Table $table): Table
     {
         return $table
@@ -178,10 +272,22 @@ class EventResource extends Resource
                 BadgeColumn::make('category')
                     ->label(__('timex::timex.event.category'))
                     ->enum(config('timex.categories.labels'))
-                    ->colors(config('timex.categories.colors'))
+                    ->formatStateUsing(function ($record){
+                        if (\Str::isUuid($record->category)){
+                            return self::getCategoryModel() == null ? "" : self::getCategoryModel()::findOrFail($record->category)->getAttributes()[self::getCategoryModelColumn('value')];
+                        }else{
+                            return config('timex.categories.labels')[$record->category] ?? "";
+                        }
+                    })
+                    ->color(function ($record){
+                        if (\Str::isUuid($record->category)){
+                            return self::getCategoryModel() == null ? "primary" :self::getCategoryModel()::findOrFail($record->category)->getAttributes()[self::getCategoryModelColumn('color')];
+                        }else{
+                            return config('timex.categories.colors')[$record->category] ?? "primary";
+                        }
+                    })
             ])->defaultSort('start');
     }
-
 
     public static function getPages(): array
     {

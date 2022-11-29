@@ -14,6 +14,7 @@ class Event extends Component
     public $color;
     public $icon;
     public $category;
+    public $organizer;
     public $isWidgetEvent = false;
 
     public function render()

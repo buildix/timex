@@ -9,7 +9,7 @@ return [
         'delete' => 'Удалить',
     ],
     'events' => [
-        'empty' => 'Нет предстоящих событий'
+        'empty' => 'Нет событий'
     ],
     'event' => [
         'subject' => 'Тема',
@@ -17,6 +17,19 @@ return [
         'category' => 'Категория',
         'allDay' => 'Целый день',
         'start' => 'Начало',
-        'end' => 'Окончание'
+        'end' => 'Окончание',
+        'participants' => 'Участники'
     ],
+    'event-list' => [
+        'author' => 'Автор: :name',
+        'start' => 'Начало: :start',
+        'end' => 'Окончание: :end'
+    ],
+    'labels' => [
+        'navigation' => 'TiMEX',
+        'breadcrumbs' => 'TiMEX',
+        'title' => 'TiMEX',
+        'today' => 'Сегодня',
+    ],
+
 ];

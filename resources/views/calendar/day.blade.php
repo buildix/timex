@@ -7,8 +7,8 @@
 
 @endphp
 <div
-    class="group items-center text-left"
-    style="height: 130px;"
+    class="timex-day"
+{{--    style="height: 130px;"--}}
 >
     <div
         @class([
@@ -41,7 +41,7 @@
             </div>
         </span>
     </div>
-    <div class="-mt-2 -pt-2" style="overflow-y: auto; overflow-x: hidden;  overflow-scrolling: touch; height: 88px;">
+    <div class="timex-event -mt-2 -pt-2" style="overflow-y: auto; overflow-x: hidden;  overflow-scrolling: touch;">
     <div class="grid grid-flow-row gap-0.5"
          id="{{$timestamp}}"
          data-status-id="{{$timestamp}}">
@@ -49,14 +49,16 @@
         <div id="{{ $event->getEventID() }}"
         wire:click="$emitUp('onEventClick','{{$event->getEventID()}}')">
             <livewire:timex-event
-                :event-i-d="$event->getEventID()"
-                :subject="$event->getSubject()"
                 :body="$event->getBody()"
-                :color="$event->getColor()"
                 :category="$event->getCategory()"
+                :color="$event->getColor()"
+                :event-i-d="$event->getEventID()"
+                :icon="$event->getIcon()"
+                :organizer="$event->getOrganizer()"
                 :start="$event->getStart()"
                 :start-time="$event->getStartTime()"
-                :icon="$event->getIcon()"/>
+                :subject="$event->getSubject()"
+                />
         </div>
     @endforeach
     </div>

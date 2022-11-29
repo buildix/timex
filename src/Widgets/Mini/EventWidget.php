@@ -5,6 +5,7 @@ namespace Buildix\Timex\Widgets\Mini;
 use Buildix\Timex\Events\EventItem;
 use Buildix\Timex\Events\InteractWithEvents;
 use Buildix\Timex\Pages\Timex;
+use Buildix\Timex\Traits\TimexTrait;
 use Carbon\Carbon;
 use Livewire\Component;
 use Illuminate\Support\Collection;
@@ -12,8 +13,10 @@ use Illuminate\Support\Collection;
 class EventWidget extends Component
 {
     use InteractWithEvents;
+    use TimexTrait;
 
     public $events;
+    public $now;
 
     protected $listeners = [
         'updateWidget' => 'updateWidget'
@@ -25,6 +28,11 @@ class EventWidget extends Component
         $this->events = self::getEvents();
     }
 
+    public function boot()
+    {
+        $this->now = Carbon::today()->timestamp;
+    }
+
     public function mount()
     {
         $this->events = self::getEvents();
@@ -32,20 +40,10 @@ class EventWidget extends Component
 
     public static function getEvents(): Collection
     {
-        $events = self::getModel()::orderBy('startTime')->get()
-            ->map(function ($event){
-                return EventItem::make($event->id)
-                    ->subject($event->subject)
-                    ->body($event->body)
-                    ->color($event->category)
-                    ->category($event->category)
-                    ->start(Carbon::create($event->start))
-                    ->startTime($event->startTime)
-                    ->end(Carbon::create($event->end));
-            })->toArray();
+        $events = self::getPageClass()::getEvents();
 
         return collect($events)->filter(function ($event){
-            return Carbon::createFromTimestamp($event->start) == today() && $event->startTime > now()->isoFormat('H:mm:ss');
+            return $event->start == today()->timestamp && Carbon::createFromTimeString($event->startTime) >= now();
         });
 
     }

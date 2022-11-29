@@ -5,6 +5,7 @@ namespace Buildix\Timex;
 use BladeUI\Icons\Factory;
 use Buildix\Timex\Calendar\Day;
 use Buildix\Timex\Calendar\Event;
+use Buildix\Timex\Calendar\EventList;
 use Buildix\Timex\Calendar\Month;
 use Buildix\Timex\Calendar\Week;
 use Buildix\Timex\Widgets\Mini\DayWidget;
@@ -22,6 +23,10 @@ class TimexServiceProvider extends PluginServiceProvider
 {
     protected array $scripts = [
       'timex' => __DIR__.'/../resources/dist/timex.js'
+    ];
+
+    protected array $styles = [
+      'timex' => __DIR__.'/../resources/dist/timex.css'
     ];
 
     public function configurePackage(Package $package): void
@@ -48,6 +53,7 @@ class TimexServiceProvider extends PluginServiceProvider
         Livewire::component('timex-event',Event::class);
         Livewire::component('timex-event-widget',EventWidget::class);
         Livewire::component('timex-day-widget',DayWidget::class);
+        Livewire::component('timex-event-list',EventList::class);
 
         $this->registerConfig();
 

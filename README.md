@@ -6,6 +6,7 @@
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/buildix/timex.svg?style=flat-square)](https://packagist.org/packages/buildix/timex)
 [![Total Downloads](https://img.shields.io/packagist/dt/buildix/timex.svg?style=flat-square)](https://packagist.org/packages/buildix/timex)
 
+
 <img width="1792" alt="timex-main" src="https://user-images.githubusercontent.com/2136612/203271680-8907004a-dd29-4adb-8de8-05cac681ba63.png">
 
 
@@ -24,13 +25,29 @@ php artisan vendor:publish --tag="timex-migrations"
 php artisan migrate
 ```
 
+**If you're upgrading from 1.0.3 > 1.0.4 make sure to alter your database table to include `participants` column:**
+```
+php artisan make:migration add_participants_to_timex_table --table=timex-events
+```
+
+In your newly created migration file add the following:
+
+```php
+Schema::create('timex-events', function ($table) {
+        $table->json("participants")->nullable;
+    });
+```
+
 You can publish the config file with:
 
 ```bash
 php artisan vendor:publish --tag="timex-config"
 ```
 
-This is the contents of the published config file:
+<details><summary>TiMEX Config</summary>
+<p>
+
+#### This is the contents of the published config file:
 
 ```php
 return [
@@ -49,7 +66,7 @@ return [
     |--------------------------------------------------------------------------
     | TIMEX Mini widget
     |--------------------------------------------------------------------------
-    | * - Not available on the release. Subscribe for future updates
+    |
     | You can disable or enable individually widgets or entirely the whole view.
     |
     */
@@ -62,7 +79,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | TIMEX Calendar start & end of week
+    | TIMEX Calendar configurations
     |--------------------------------------------------------------------------
     |
     | Change according to your locale.
@@ -70,9 +87,11 @@ return [
     */
 
     'week' => [
-        'start' => \Carbon\Carbon::MONDAY,
-        'end' =>  \Carbon\Carbon::SUNDAY
+        'start' => Carbon::MONDAY,
+        'end' =>  Carbon::SUNDAY
     ],
+
+    'dayName' => 'minDayName', // minDayName or dayName or shortDayName
 
     /*
     |--------------------------------------------------------------------------
@@ -89,18 +108,32 @@ return [
         'slug' => 'timex',
         'group' => 'timex',
         'shouldRegisterNavigation' => true,
+        'modalWidth' => 'xl',
         'icon' => [
             'static' => true,
             'timex' => 'timex-timex',
-            'day' => 'timex-day-'.Carbon::today()->day
+            'day' => 'timex-day-'
         ],
         'label' => [
-            'navigation' => Carbon::today()->isoFormat('dddd, D MMM'),
-            'breadcrumbs' => Carbon::today()->isoFormat('dddd, D MMM'),
-            'title' => Carbon::today()->isoFormat('dddd, D MMM'),
+            'navigation' => [
+                'static' => false,
+                'format' => 'dddd, D MMM',
+            ],
+            'breadcrumbs' => [
+                'static' => false,
+                'format' => 'dddd, D MMM',
+            ],
+            'title' => [
+              'static' => false,
+              'format' => 'dddd, D MMM',
+            ],
         ],
         'buttons' => [
-            'today' => \Carbon\Carbon::today()->format('d M'),
+            'today' => [
+                'static' => false,
+                'format' => 'D MMM'
+            ],
+            'outlined' => true,
             'icons' => [
                 'previousMonth' => 'heroicon-o-chevron-left',
                 'nextMonth' => 'heroicon-o-chevron-right',
@@ -117,8 +150,16 @@ return [
     ],
     'models' => [
         'event' => \Buildix\Timex\Models\Event::class,
-        'label' => 'Event',
-        'pluralLabel' => 'Events'
+        'users' => [
+            'model' => \App\Models\User::class,
+            'name' => 'name',
+            'id' => 'id',
+        ],
+    ],
+    'tables' => [
+        'event' => [
+            'name' => 'timex_events',
+        ],
     ],
 
     /*
@@ -126,13 +167,37 @@ return [
     | TIMEX Event categories
     |--------------------------------------------------------------------------
     |
-    | Categories names are used to define color.
+    | Categories names are used to define colors & icons.
     | Each represents default tailwind colors.
     | You may change as you wish, just make sure your color have -500 / -600 and etc variants
+    | You may also go for a custom Category model to define your labels, colors and icons
     |
     */
 
     'categories' => [
+            'isModelEnabled' => true,
+    /*
+    |--------------------------------------------------------------------------
+    | Category Model
+    |--------------------------------------------------------------------------
+    |
+    | You can define your custom Category model.
+    | Minimum and default columns in your DB should be: id, value, icon, color.
+    |
+    |
+    */
+            'model' => [
+                'class' => \App\Models\Category::class, // \App\Models\Category::class
+                'key' => 'id', // "id" is a DB column - you can change by any primary key
+                'value' => 'value', // "value" is a DB column - it used for Select options and displays on Resource page
+                'icon' => 'icon', // "icon" is a DB column - define here any heroicon- icon
+                'color' => 'color', // "color" is a DB column - default tailwindcss colors names like: primary / secondary / danger
+            ],
+        /*
+        |--------------------------------------------------------------------------
+        | Default TiMEX Categories
+        |--------------------------------------------------------------------------
+        */
             'labels' => [
                 'primary' => 'Primary category',
                 'secondary' => 'Secondary category',
@@ -152,8 +217,12 @@ return [
                 'success' => 'success',
             ],
     ],
+
 ];
 ```
+
+</p>
+</details>
 
 ## Usage
 
@@ -195,6 +264,43 @@ Also, you can change slug, icon, and the Filament resource itself
     'shouldRegisterNavigation' => false,
 ],
 ```
+#### Event custom table name
+
+You may change from default `timex_events` table name by changing config:
+
+```php
+'tables' => [
+    'event' => [
+        'name' => 'your_custom_table_name',
+],
+```
+
+#### Event category model
+
+You may create a custom category model, and define the class and main key table values in config with `isModelEnabled` set to `true`:
+
+```php
+'model' => [
+    'class' => '', // \App\Models\Category::class
+    'key' => 'id', // "id" is a DB column - you can change by any primary key
+    'value' => 'value', // "value" is a DB column - it used for Select options and displays on Resource page
+    'icon' => 'icon', // "icon" is a DB column - define here any heroicon- icon
+    'color' => 'color', // "color" is a DB column - default tailwindcss colors names like: primary / secondary / danger
+],
+```
+#### User model
+
+TiMEX uses default User model `\App\Models\User::class`
+
+You may change the class to your preferences and define which columns will be used for ID and name:
+
+```php
+'users' => [
+            'model' => \App\Models\User::class,
+            'name' => 'name',
+            'id' => 'id',
+        ],
+```
 
 ### TiMEX Page
 
@@ -206,7 +312,7 @@ If you need to change label naming, slug, navigation group, etc, go ahead to TiM
 <img width="1792" alt="timex-dark" src="https://user-images.githubusercontent.com/2136612/203272145-28d209ed-4230-4a79-a2b2-0c90c9028bfc.png">
 
 
-### Dynamic icon set
+### Dynamic icon set & labels
 <img width="1015" alt="timex-icons" src="https://user-images.githubusercontent.com/2136612/203330528-a8cbc30f-26dd-4fd2-a2fc-87a9ae106fd8.png">
 
 
@@ -221,6 +327,43 @@ You may change navigation icon from static to dynamic, simply changing TiMEX con
     'static' => false,
     //
 ],
+```
+
+You may change navigation label, title, breadcrumbs from dynamic to static string, which you can translate to any language you want by changing config properties:
+
+```php
+// timex.php
+
+'label' => [
+    'navigation' => [
+        'static' => true,
+        //
+    ],
+    'breadcrumbs' => [
+        'static' => true,
+        //
+    ],
+    'title' => [
+        'static' => true,
+        //
+    ],
+],
+'buttons' => [
+    'today' => [
+        'static' => true,
+        //
+    ],
+],
+
+// resources/lang/en/timex.php
+
+'labels' => [
+    'navigation' => 'TiMEX',
+    'breadcrumbs' => 'TiMEX',
+    'title' => 'TiMEX',
+    'today' => 'Today',
+],
+
 ```
 
 ### Start & End of week
