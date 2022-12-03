@@ -31,18 +31,3 @@ window.addEventListener('monthLoaded', event => {
     })
 });
 
-function addBorder(evt)
-{
-    const element = document.getElementById(evt.srcElement.id);
-    element.style.backgroundColor = "gray";
-    element.style.opacity = "0.4";
-    element.style.color = "white";
-}
-
-function removeBorder(evt)
-{
-    const element = document.getElementById(evt.srcElement.id);
-    element.removeAttribute('style');
-
-}
-

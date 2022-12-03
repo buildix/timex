@@ -16,13 +16,12 @@
         wire:click="$emitUp('onDayClick','{{$timestamp}}')">
         <span
             id="day-{{$timestamp}}"
-            onmouseenter="addBorder(event)"
-            onmouseleave="removeBorder(event)"
             @class(
                 [
                     'relative cursor-pointer inline-flex items-center justify-center text-sm ml-auto rtl:ml-0 rtl:mr-auto font-medium tracking-tight rounded-xl whitespace-normal',
                     'text-white bg-primary-500' => $isCurrentDay,
                     'rounded-full px-3 py-0.5 h-6 -mb-2',
+                    'hover:bg-gray-500 hover:text-white'
                 ]
             )
         >
