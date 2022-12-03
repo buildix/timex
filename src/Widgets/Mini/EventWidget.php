@@ -43,7 +43,8 @@ class EventWidget extends Component
         $events = self::getPageClass()::getEvents();
 
         return collect($events)->filter(function ($event){
-            return $event->start == today()->timestamp && Carbon::createFromTimeString($event->startTime) >= now();
+            return $event->start == today()->timestamp && Carbon::createFromTimeString($event->startTime) >= now()
+                || $event->start == today()->timestamp && $event->isAllDay;
         });
 
     }

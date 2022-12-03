@@ -26,7 +26,9 @@ class Month extends Component
         'modelUpdated' => 'loaded',
         'onTodayClick' => 'onTodayClick',
         'onPrevClick' => 'onPreviousMonthClick',
-        'onNextClick' => 'onNextMonthClick'
+        'onNextClick' => 'onNextMonthClick',
+        'onNextYearClick' => 'onNextYearClick',
+        'onPreviousYearClick' => 'onPreviousYearClick',
     ];
 
 
@@ -117,6 +119,24 @@ class Month extends Component
     public function onNextMonthClick()
     {
         $this->today = $this->today->addMonth();
+        $this->monthName = $this->today->monthName;
+        $this->setCalendar();
+        $this->loaded();
+        $this->emitUp('monthNameChanged',$this->monthName,$this->today->year);
+    }
+
+    public function onNextYearClick()
+    {
+        $this->today = $this->today->addYear();
+        $this->monthName = $this->today->monthName;
+        $this->setCalendar();
+        $this->loaded();
+        $this->emitUp('monthNameChanged',$this->monthName,$this->today->year);
+    }
+
+    public function onPreviousYearClick()
+    {
+        $this->today = $this->today->subYear();
         $this->monthName = $this->today->monthName;
         $this->setCalendar();
         $this->loaded();

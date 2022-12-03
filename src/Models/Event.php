@@ -4,14 +4,14 @@ namespace Buildix\Timex\Models;
 
 use App\Models\User;
 use Buildix\Timex\Traits\TimexTrait;
-use Buildix\Timex\Traits\Uuids;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Spatie\Permission\PermissionRegistrar;
 
 class Event extends Model
 {
-    use Uuids;
+    use HasUuids;
     use TimexTrait;
 
     protected $guarded = [];
@@ -25,7 +25,7 @@ class Event extends Model
 
     public function getTable()
     {
-        return config('timex.tables.event.name', parent::getTable());
+        return config('timex.tables.event.name', "timex_events");
     }
 
     public function __construct(array $attributes = [])

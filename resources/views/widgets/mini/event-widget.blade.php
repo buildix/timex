@@ -11,6 +11,7 @@
                 :start="$event->getStart()"
                 :start-time="$event->getStartTime()"
                 :icon="$event->getIcon()"
+                :is-all-day="$event->getIsAllDay()"
                 :is-widget-event="true"/>
         </div>
     @endforeach

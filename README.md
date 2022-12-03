@@ -1,7 +1,7 @@
 ![timex-logo](https://user-images.githubusercontent.com/2136612/202689778-eb013a03-b0fa-4c0e-941c-7d999c09fd6f.jpeg)
 
 
-## TIMEX - calendar plugin for [filament](https://github.com/filamentphp/filament)
+## TiMEX - calendar plugin for [filament](https://github.com/filamentphp/filament)
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/buildix/timex.svg?style=flat-square)](https://packagist.org/packages/buildix/timex)
 [![Total Downloads](https://img.shields.io/packagist/dt/buildix/timex.svg?style=flat-square)](https://packagist.org/packages/buildix/timex)
@@ -18,6 +18,13 @@ You can install the package via composer:
 composer require buildix/timex
 ```
 
+After your fresh installation, you may install all neccessary assets via the following command:
+
+```bash
+php artisan timex:install
+```
+<hr>
+<details><summary>Publishing vendor assets</summary>
 You can publish and run the migrations with:
 
 ```bash
@@ -34,7 +41,7 @@ In your newly created migration file add the following:
 
 ```php
 Schema::create('timex-events', function ($table) {
-        $table->json("participants")->nullable;
+        $table->json("participants")->nullable();
     });
 ```
 
@@ -43,7 +50,8 @@ You can publish the config file with:
 ```bash
 php artisan vendor:publish --tag="timex-config"
 ```
-
+</details>
+<br>
 <details><summary>TiMEX Config</summary>
 <p>
 
@@ -53,7 +61,7 @@ php artisan vendor:publish --tag="timex-config"
 return [
     /*
     |--------------------------------------------------------------------------
-    | TIMEX Icon set
+    | TiMEX Icon set
     |--------------------------------------------------------------------------
     |
     | Don't change that prefix, otherwise icon set will not work.
@@ -64,7 +72,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | TIMEX Mini widget
+    | TiMEX Mini widget
     |--------------------------------------------------------------------------
     |
     | You can disable or enable individually widgets or entirely the whole view.
@@ -79,7 +87,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | TIMEX Calendar configurations
+    | TiMEX Calendar configurations
     |--------------------------------------------------------------------------
     |
     | Change according to your locale.
@@ -95,10 +103,10 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | TIMEX Resources & Pages
+    | TiMEX Resources & Pages
     |--------------------------------------------------------------------------
     |
-    | By default TIMEX out of box will work, just make sure you make migration.
+    | By default TiMEX out of box will work, just make sure you make migration.
     | But you can also make your own Model and Filament resource and update config accordingly
     |
     */
@@ -129,12 +137,15 @@ return [
             ],
         ],
         'buttons' => [
+            'hideYearNavigation' => false,
             'today' => [
                 'static' => false,
                 'format' => 'D MMM'
             ],
             'outlined' => true,
             'icons' => [
+                'previousYear' => 'heroicon-o-chevron-double-left',
+                'nextYear' => 'heroicon-o-chevron-double-right',
                 'previousMonth' => 'heroicon-o-chevron-left',
                 'nextMonth' => 'heroicon-o-chevron-right',
                 'createEvent' => 'heroicon-o-plus'
@@ -164,7 +175,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | TIMEX Event categories
+    | TiMEX Event categories
     |--------------------------------------------------------------------------
     |
     | Categories names are used to define colors & icons.
@@ -223,10 +234,11 @@ return [
 
 </p>
 </details>
+<hr>
 
 ## Usage
 
-After your fresh installation, TIMEX calendar is working out of the box (make sure to run migration) and start managing your time.
+After your fresh installation, TiMEX calendar is working out of the box (make sure to run migration) and start managing your time.
 
 ### EventItem
 

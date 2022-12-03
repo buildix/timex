@@ -15,6 +15,7 @@ use Filament\PluginServiceProvider;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\View\View;
 use Livewire\Livewire;
+use Spatie\LaravelPackageTools\Commands\InstallCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 use Buildix\Timex\Commands\TimexCommand;
@@ -42,7 +43,14 @@ class TimexServiceProvider extends PluginServiceProvider
             ->hasViews()
             ->hasAssets()
             ->hasTranslations()
-            ->hasMigration('create_timex_tables');
+            ->hasMigration('create_timex_tables')
+            ->hasInstallCommand(function (InstallCommand $command){
+                $command
+                    ->publishConfigFile()
+                    ->publishMigrations()
+                    ->askToRunMigrations()
+                    ->askToStarRepoOnGitHub('buildix/timex');
+            });
     }
 
     public function boot()

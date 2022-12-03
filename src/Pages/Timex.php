@@ -31,7 +31,7 @@ class Timex extends Page
     use UsesResourceForm;
 
     protected static string $view = "timex::layout.page";
-    protected $listeners = ['eventUpdated','onEventClick','monthNameChanged'];
+    protected $listeners = ['eventUpdated','onEventClick','monthNameChanged','onDayClick'];
     protected static $eventData;
     public string $monthName = "";
 
@@ -79,27 +79,41 @@ class Timex extends Page
 
     public function monthNameChanged($data,$year)
     {
-        if (today()->year != $year){
             $this->monthName = $data." ".$year;
-        }else{
-            $this->monthName = $data;
-        }
     }
 
     public function __construct()
     {
-        $this->monthName = today()->monthName;
+        $this->monthName = today()->monthName." ".today()->year;
     }
 
     protected function getActions(): array
     {
         return [
+                Action::make('prev-year')
+                    ->size('sm')
+                    ->icon(config('timex.pages.buttons.icons.previousYear', "heroicon-o-chevron-double-left"))
+                    ->outlined(config('timex.pages.buttons.outlined'))
+                    ->disableLabel()
+                    ->color('secondary')
+                    ->hidden(config('timex.pages.buttons.hideYearNavigation', false))
+                    ->action(fn() => $this->emit('onPreviousYearClick')),
                 Action::make('currMonth')
                     ->size('sm')
+                    ->extraAttributes(['class' => '-ml-3'])
                     ->disabled()
                     ->color('secondary')
                     ->outlined()
                     ->label($this->monthName),
+                Action::make('next-year')
+                    ->size('sm')
+                    ->icon(config('timex.pages.buttons.icons.nextYear',"heroicon-o-chevron-double-right"))
+                    ->extraAttributes(['class' => '-ml-3'])
+                    ->outlined(config('timex.pages.buttons.outlined'))
+                    ->disableLabel()
+                    ->color('secondary')
+                    ->hidden(config('timex.pages.buttons.hideYearNavigation', false))
+                    ->action(fn() => $this->emit('onNextYearClick')),
                 Action::make('openCreateModal')
                     ->label(__('filament::resources/pages/create-record.title',
                             ['label' => Str::lower(__('timex::timex.model.label'))]))
@@ -145,20 +159,22 @@ class Timex extends Page
         ];
     }
 
+
     public static function getEvents(): array
     {
         $events = self::getModel()::orderBy('startTime')->get()
             ->map(function ($event){
                 return EventItem::make($event->id)
-                    ->subject($event->subject)
                     ->body($event->body)
-                    ->color($event->category)
                     ->category($event->category)
-                    ->start(Carbon::create($event->start))
-                    ->startTime($event->startTime)
+                    ->color($event->category)
                     ->end(Carbon::create($event->end))
+                    ->isAllDay($event->isAllDay)
+                    ->subject($event->subject)
                     ->organizer($event->organizer)
-                    ->participants($event?->participants);
+                    ->participants($event?->participants)
+                    ->start(Carbon::create($event->start))
+                    ->startTime($event->startTime);
             })->toArray();
 
         return collect($events)->filter(function ($event){
@@ -198,5 +214,20 @@ class Timex extends Page
             ...$event,
             'participants' => self::getFormModel()?->participants
             ]);
+        $this->getMountedActionForm()->disabled($this->getFormModel()->getAttribute('organizer') !== \Auth::id());
+    }
+
+    public function onDayClick($timestamp)
+    {
+        if (config('timex.isDayClickEnabled')){
+            $this->mountAction('openCreateModal');
+            $this->getMountedActionForm()
+                ->fill([
+                    'startTime' => Carbon::now()->setMinutes(0)->addHour(),
+                    'endTime' => Carbon::now()->setMinutes(0)->addHour()->addMinutes(30),
+                    'start' => Carbon::createFromTimestamp($timestamp),
+                    'end' => Carbon::createFromTimestamp($timestamp)
+                ]);
+        }
     }
 }

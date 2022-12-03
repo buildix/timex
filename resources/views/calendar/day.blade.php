@@ -6,20 +6,21 @@
     $isFirstOfMonth = $timestamp == $firstDayOfMonth;
 
 @endphp
-<div
-    class="timex-day"
-{{--    style="height: 130px;"--}}
->
+<div class="timex-day">
     <div
         @class([
             'text-gray-400' => !$isCurrentMonthDay || $isWeekend,
             'border-t dark:border-gray-600',
             'pl-2 pt-1 py-1'
-    ])>
+        ])
+        wire:click="$emitUp('onDayClick','{{$timestamp}}')">
         <span
+            id="day-{{$timestamp}}"
+            onmouseenter="addBorder(event)"
+            onmouseleave="removeBorder(event)"
             @class(
                 [
-                    'relative inline-flex items-center justify-center text-sm ml-auto rtl:ml-0 rtl:mr-auto font-medium tracking-tight rounded-xl whitespace-normal',
+                    'relative cursor-pointer inline-flex items-center justify-center text-sm ml-auto rtl:ml-0 rtl:mr-auto font-medium tracking-tight rounded-xl whitespace-normal',
                     'text-white bg-primary-500' => $isCurrentDay,
                     'rounded-full px-3 py-0.5 h-6 -mb-2',
                 ]
@@ -54,6 +55,7 @@
                 :color="$event->getColor()"
                 :event-i-d="$event->getEventID()"
                 :icon="$event->getIcon()"
+                :is-all-day="$event->getIsAllDay()"
                 :organizer="$event->getOrganizer()"
                 :start="$event->getStart()"
                 :start-time="$event->getStartTime()"

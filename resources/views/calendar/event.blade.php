@@ -59,10 +59,14 @@
             {{$subject}}
         </div>
         <div @class([
-                'col-span-2 ml-2' => !$isWidgetEvent,
-                'col-span-2 ml-4' => $isWidgetEvent
+                'col-span-2 ml-2 truncate' => !$isWidgetEvent,
+                'col-span-2 ml-4 truncate' => $isWidgetEvent
             ])>
-            {{\Carbon\Carbon::parse($startTime)->isoFormat('H:mm')}}
+            @if($isAllDay)
+                {{__('timex::timex.event.allDay')}}
+            @else
+                {{\Carbon\Carbon::parse($startTime)->isoFormat('H:mm')}}
+            @endif
         </div>
     </div>
 

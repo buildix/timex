@@ -246,6 +246,16 @@ class EventResource extends Resource
                                     ->pluck(self::getCategoryModelColumn('value'),self::getCategoryModelColumn('key'))
                                     : config('timex.categories.labels');
                             })
+                            ->createOptionForm(function (){
+                                return self::isCategoryModelEnabled() ? [
+                                    TextInput::make('value')->required(),
+                                    TextInput::make('icon'),
+                                    TextInput::make('color')
+                                ] : [];
+                            })
+                            ->createOptionUsing(function ($data){
+                                self::getCategoryModel()::query()->create($data);
+                            })
                     ])
                 ])->columnSpan(1)
             ]),
