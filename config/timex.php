@@ -60,7 +60,9 @@ return [
         'timex' => \Buildix\Timex\Pages\Timex::class,
         'slug' => 'timex',
         'group' => 'timex',
+        'sort' => 0,
         'shouldRegisterNavigation' => true,
+        'enablePolicy' => false,
         'modalWidth' => 'xl',
         'icon' => [
             'static' => true,
@@ -95,11 +97,38 @@ return [
                 'nextMonth' => 'heroicon-o-chevron-right',
                 'createEvent' => 'heroicon-o-plus'
             ],
+            'modal' => [
+                'submit' => [
+                    'outlined' => false,
+                    'color' => 'primary',
+                    'icon' => [
+                        'enabled' => true,
+                        'name' => 'heroicon-o-save'
+                    ],
+                ],
+                'cancel' => [
+                    'outlined' => false,
+                    'color' => 'secondary',
+                    'icon' => [
+                        'enabled' => true,
+                        'name' => 'heroicon-o-x-circle'
+                    ],
+                ],
+                'delete' => [
+                    'outlined' => false,
+                    'color' => 'danger',
+                    'icon' => [
+                        'enabled' => true,
+                        'name' => 'heroicon-o-trash'
+                    ],
+                ],
+            ],
         ],
     ],
 
     'resources' => [
         'event' => \Buildix\Timex\Resources\EventResource::class,
+        'sort' => 1,
         'icon' => 'heroicon-o-calendar',
         'slug' => 'timex-events',
         'shouldRegisterNavigation' => true,

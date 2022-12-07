@@ -14,10 +14,23 @@ class Day extends Component
     public $first;
     public $last;
     public $events;
+    public bool $isCurrentDay;
+    public bool $isCurrentMonthDay;
+    public bool $isWeekend;
+    public $firstDayOfMonth;
+    public bool $isFirstOfMonth;
+
+
 
     public function mount()
     {
         $this->events = $this->getEvents($this->timestamp);
+
+        $this->isCurrentDay = \Carbon\Carbon::createFromTimestamp($this->timestamp)->isCurrentDay();
+        $this->isCurrentMonthDay = \Carbon\Carbon::createFromTimestamp($this->timestamp)->isCurrentMonth();
+        $this->isWeekend = \Carbon\Carbon::createFromTimestamp($this->timestamp)->isWeekend();
+        $this->firstDayOfMonth = \Carbon\Carbon::createFromTimestamp($this->timestamp)->firstOfMonth()->timestamp;
+        $this->isFirstOfMonth = $this->timestamp == $this->firstDayOfMonth;
     }
 
 

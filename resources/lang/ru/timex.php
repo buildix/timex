@@ -6,6 +6,8 @@ return [
         'pluralLabel' => 'События',
     ],
     'modal' => [
+        'submit' => 'Сохранить',
+        'cancel' => 'Отмена',
         'delete' => 'Удалить',
     ],
     'events' => [

@@ -6,6 +6,8 @@ return [
       'pluralLabel' => 'Events',
     ],
     'modal' => [
+        'submit' => 'Submit',
+        'cancel' => 'Cancel',
         'delete' => 'Delete',
     ],
     'events' => [

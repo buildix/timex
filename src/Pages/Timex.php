@@ -18,6 +18,7 @@ use Filament\Forms;
 use Filament\Resources\Pages\Concerns\UsesResourceForm;
 use Filament\Resources\Resource;
 use Illuminate\Contracts\Support\Htmlable;
+use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Support\Fluent;
 use Illuminate\Support\Str;
@@ -31,30 +32,35 @@ class Timex extends Page
     use UsesResourceForm;
 
     protected static string $view = "timex::layout.page";
-    protected $listeners = ['eventUpdated','onEventClick','monthNameChanged','onDayClick'];
+    protected $listeners = ['eventUpdated','onEventClick','monthNameChanged','onDayClick','onCreateClick'];
     protected static $eventData;
     public string $monthName = "";
 
     protected static function getNavigationLabel(): string
     {
-        return config('timex.pages.label.navigation.static') ? __('timex::timex.labels.navigation') : self::getDynamicLabel('navigation');
+        return config('timex.pages.label.navigation.static') ? trans('timex::timex.labels.navigation') : self::getDynamicLabel('navigation');
     }
 
     protected function getTitle(): string
     {
-        return config('timex.pages.label.title.static') ? __('timex::timex.labels.title') : self::getDynamicLabel('title');
+        return config('timex.pages.label.title.static') ? trans('timex::timex.labels.title') : self::getDynamicLabel('title');
     }
 
     protected function getBreadcrumbs(): array
     {
         return [
-            config('timex.pages.label.breadcrumbs.static') ? __('timex::timex.labels.breadcrumbs') : self::getDynamicLabel('breadcrumbs')
+            config('timex.pages.label.breadcrumbs.static') ? trans('timex::timex.labels.breadcrumbs') : self::getDynamicLabel('breadcrumbs')
         ];
     }
 
     protected static function getNavigationGroup(): ?string
     {
         return config('timex.pages.group');
+    }
+
+    protected static function getNavigationSort(): ?int
+    {
+        return config('timex.pages.sort',0);
     }
 
     protected static function getNavigationIcon(): string
@@ -69,7 +75,14 @@ class Timex extends Page
 
     protected static function shouldRegisterNavigation(): bool
     {
-        return config('timex.pages.shouldRegisterNavigation');
+        if (!config('timex.pages.shouldRegisterNavigation')){
+            return false;
+        }
+        if (config('timex.pages.enablePolicy',false) && \Gate::getPolicyFor(self::getModel()) && !\Gate::allows('viewAny',self::getModel())){
+            return false;
+        }
+
+        return true;
     }
 
     protected function getHeading(): string|Htmlable
@@ -79,7 +92,7 @@ class Timex extends Page
 
     public function monthNameChanged($data,$year)
     {
-            $this->monthName = $data." ".$year;
+            $this->monthName = $data;
     }
 
     public function __construct()
@@ -90,32 +103,8 @@ class Timex extends Page
     protected function getActions(): array
     {
         return [
-                Action::make('prev-year')
-                    ->size('sm')
-                    ->icon(config('timex.pages.buttons.icons.previousYear', "heroicon-o-chevron-double-left"))
-                    ->outlined(config('timex.pages.buttons.outlined'))
-                    ->disableLabel()
-                    ->color('secondary')
-                    ->hidden(config('timex.pages.buttons.hideYearNavigation', false))
-                    ->action(fn() => $this->emit('onPreviousYearClick')),
-                Action::make('currMonth')
-                    ->size('sm')
-                    ->extraAttributes(['class' => '-ml-3'])
-                    ->disabled()
-                    ->color('secondary')
-                    ->outlined()
-                    ->label($this->monthName),
-                Action::make('next-year')
-                    ->size('sm')
-                    ->icon(config('timex.pages.buttons.icons.nextYear',"heroicon-o-chevron-double-right"))
-                    ->extraAttributes(['class' => '-ml-3'])
-                    ->outlined(config('timex.pages.buttons.outlined'))
-                    ->disableLabel()
-                    ->color('secondary')
-                    ->hidden(config('timex.pages.buttons.hideYearNavigation', false))
-                    ->action(fn() => $this->emit('onNextYearClick')),
                 Action::make('openCreateModal')
-                    ->label(__('filament::resources/pages/create-record.title',
+                    ->label(trans('filament::resources/pages/create-record.title',
                             ['label' => Str::lower(__('timex::timex.model.label'))]))
                     ->icon(config('timex.pages.buttons.icons.createEvent'))
                     ->size('sm')
@@ -123,42 +112,38 @@ class Timex extends Page
                     ->slideOver()
                     ->extraAttributes(['class' => '-mr-2'])
                     ->form($this->getResourceForm(2)->getSchema())
-                    ->modalHeading(__('timex::timex.model.label'))
+                    ->modalHeading(trans('timex::timex.model.label'))
                     ->modalWidth(config('timex.pages.modalWidth'))
                     ->action(fn(array $data) => $this->updateOrCreate($data))
-                    ->extraModalActions([
+                    ->modalActions([
+                        Action::makeModalAction('submit')
+                            ->label(trans('timex::timex.modal.submit'))
+                            ->color(config('timex.pages.buttons.modal.submit.color','primary'))
+                            ->outlined(config('timex.pages.buttons.modal.submit.outlined',false))
+                            ->icon(config('timex.pages.buttons.modal.submit.icon.name',''))
+                            ->submit()
+                            ->visible(function (){
+                                return $this->mountedActionData['organizer'] == \Auth::id() ? true : ($this->mountedActionData['organizer'] != \Auth::id() ? $this->mountedActionData['organizer'] == null : true);
+                            }),
                         Action::makeModalAction('delete')
-                            ->label(__('timex::timex.modal.delete'))
-                            ->color('danger')
+                            ->label(trans('timex::timex.modal.delete'))
+                            ->color(config('timex.pages.buttons.modal.delete.color','danger'))
+                            ->outlined(config('timex.pages.buttons.modal.delete.outlined', false))
+                            ->icon(config('timex.pages.buttons.modal.delete.icon.name',''))
                             ->action('deleteEvent')
+                            ->cancel()
                             ->visible(function (){
                                 return $this->mountedActionData['organizer'] == \Auth::id() ? true : ($this->mountedActionData['organizer'] != \Auth::id() ? false : true);
-                            })
-                            ->cancel()
+                            }),
+                        Action::makeModalAction('cancel')
+                            ->label(trans('timex::timex.modal.cancel'))
+                            ->color(config('timex.pages.buttons.modal.cancel.color','secondary'))
+                            ->outlined(config('timex.pages.buttons.modal.cancel.outlined',false))
+                            ->icon(config('timex.pages.buttons.modal.cancel.icon.name',''))
+                            ->cancel(),
                     ]),
-                Action::make('prev')
-                    ->size('sm')
-                    ->icon(config('timex.pages.buttons.icons.previousMonth'))
-                    ->extraAttributes(['class' => '-mr-2 -ml-1'])
-                    ->outlined(config('timex.pages.buttons.outlined'))
-                    ->disableLabel()
-                    ->action(fn() => $this->emit('onPrevClick')),
-                Action::make('today')
-                    ->size('sm')
-                    ->outlined(config('timex.pages.buttons.outlined'))
-                    ->extraAttributes(['class' => '-ml-1 -mr-1'])
-                    ->label(config('timex.pages.buttons.today.static') ? __('timex::timex.labels.today') : self::getDynamicLabel('today'))
-                    ->action(fn() => $this->emit('onTodayClick')),
-                Action::make('next')
-                    ->size('sm')
-                    ->icon(config('timex.pages.buttons.icons.nextMonth'))
-                    ->extraAttributes(['class' => '-ml-2'])
-                    ->outlined(config('timex.pages.buttons.outlined'))
-                    ->disableLabel()
-                    ->action(fn() => $this->emit('onNextClick')),
         ];
     }
-
 
     public static function getEvents(): array
     {
@@ -229,5 +214,22 @@ class Timex extends Page
                     'end' => Carbon::createFromTimestamp($timestamp)
                 ]);
         }
+    }
+
+    public function onCreateClick()
+    {
+        $this->mountAction('openCreateModal');
+        $this->getMountedActionForm()
+            ->fill([
+                'startTime' => Carbon::now()->setMinutes(0)->addHour(),
+                'endTime' => Carbon::now()->setMinutes(0)->addHour()->addMinutes(30),
+                'start' => Carbon::createFromTimestamp(today()->timestamp),
+                'end' => Carbon::createFromTimestamp(today()->timestamp)
+            ]);
+    }
+
+    protected function getHeader(): ?View
+    {
+        return \view('timex::calendar.header');
     }
 }

@@ -1,21 +1,3 @@
-@php
-    $isMyEvent = $organizer == Auth::id();
-    $isModelEnabled = \Buildix\Timex\Traits\TimexTrait::isCategoryModelEnabled() && Str::isUuid($category);
-    if ($isModelEnabled){
-        $model = \Buildix\Timex\Traits\TimexTrait::getCategoryModel()::query()->find($category)->getAttributes();
-        $icon = $model[\Buildix\Timex\Traits\TimexTrait::getCategoryModelColumn('icon')];
-        $color = $model[\Buildix\Timex\Traits\TimexTrait::getCategoryModelColumn('color')];
-    }elseif (Str::isUuid($category) && !$isModelEnabled){
-        $icon = "";
-        $color = "primary";
-    }else{
-        $icon = config('timex.categories.icons.'.$category);
-        $color = config('timex.categories.colors.'.$color);
-    }
-    $eventStart = \Carbon\Carbon::createFromTimestamp($start)->setHours(23);
-    $isInPast =  $eventStart->isPast();
-@endphp
-
 <div class="flex"
      style="height: 20px;">
     <span
@@ -63,7 +45,7 @@
                 'col-span-2 ml-4 truncate' => $isWidgetEvent
             ])>
             @if($isAllDay)
-                {{__('timex::timex.event.allDay')}}
+                {{trans('timex::timex.event.allDay')}}
             @else
                 {{\Carbon\Carbon::parse($startTime)->isoFormat('H:mm')}}
             @endif

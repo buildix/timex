@@ -6,8 +6,10 @@ use BladeUI\Icons\Factory;
 use Buildix\Timex\Calendar\Day;
 use Buildix\Timex\Calendar\Event;
 use Buildix\Timex\Calendar\EventList;
+use Buildix\Timex\Calendar\Header;
 use Buildix\Timex\Calendar\Month;
 use Buildix\Timex\Calendar\Week;
+use Buildix\Timex\Commands\SetTableNameCommand;
 use Buildix\Timex\Widgets\Mini\DayWidget;
 use Buildix\Timex\Widgets\Mini\EventWidget;
 use Filament\Facades\Filament;
@@ -62,6 +64,7 @@ class TimexServiceProvider extends PluginServiceProvider
         Livewire::component('timex-event-widget',EventWidget::class);
         Livewire::component('timex-day-widget',DayWidget::class);
         Livewire::component('timex-event-list',EventList::class);
+        Livewire::component('timex-header',Header::class);
 
         $this->registerConfig();
 
