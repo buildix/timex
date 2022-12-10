@@ -230,6 +230,6 @@ class Timex extends Page
 
     protected function getHeader(): ?View
     {
-        return \view('timex::calendar.header');
+        return \view('timex::header.header');
     }
 }

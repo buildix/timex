@@ -6,7 +6,7 @@
         <x-filament-support::button
             wire:click="$emit('onPreviousYearClick')"
             @class([
-            'hidden' => config('timex.pages.buttons.hideYearNavigation', false)
+            'hidden sm:visible' => config('timex.pages.buttons.hideYearNavigation', false),
             ])
             :size="'sm'"
             :color="'secondary'"
@@ -49,11 +49,15 @@
         <span class="border border-gray-300 dark:border-gray-400 h-5 rounded ml-2 mr-2"></span>
         <x-filament-support::button
             wire:click="$emit('onCreateClick')"
-            :icon="config('timex.pages.buttons.icons.createEvent')"
             :outlined="true"
             :dark-mode="true"
             :size="'sm'">
+            <div class="flex items-center gap-2">
+            <x-dynamic-component :component="config('timex.pages.buttons.icons.createEvent')" class="h-4 w-4"/>
+            <div class="timex-header-create-button">
             {{trans('filament::resources/pages/create-record.title', ['label' => Str::lower(__('timex::timex.model.label'))])}}
+            </div>
+            </div>
         </x-filament-support::button>
     </div>
 </div>

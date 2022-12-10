@@ -3,7 +3,7 @@
         @class([
             'text-gray-400' => !$isCurrentMonthDay || $isWeekend,
             'border-t dark:border-gray-600',
-            'pl-2 pt-2'
+            'pl-2 pt-2',
         ])
         wire:click="$emitUp('onDayClick','{{$timestamp}}')">
         <span
@@ -23,15 +23,16 @@
                 {{$day}}
             </span>
         </span>
-        <span class="absolute">
+        @unless(!$isFirstOfMonth)
+        <span class="timex-day-month absolute">
             <div
                 @class([
-                'w-32 ml-1 text-xs',
-                'hidden' => !$isFirstOfMonth
+                'ml-1 text-xs',
                 ])>
                 {{\Carbon\Carbon::createFromTimestamp($timestamp)->shortMonthName}}
             </div>
         </span>
+        @endunless
     </div>
     <div class="timex-event" style="overflow-y: auto; overflow-x: hidden;  overflow-scrolling: touch;">
     <div class="grid grid-flow-row gap-0.5"

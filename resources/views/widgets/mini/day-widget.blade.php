@@ -5,7 +5,7 @@
         'hover:bg-gray-500/10 dark:bg-gray-700'
         ])
     style="width: 4rem;">
-    <div class="text-xs font-medium text-primary-600">
+    <div class="text-xs font-medium text-primary-600 dark:text-primary-500">
         {{$monthName.'.'}}
     </div>
     <div class="content-center items-center grid grid-cols-2 pl-2 pr-2 ml-1 mr-2">

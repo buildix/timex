@@ -7,9 +7,9 @@ use Livewire\Component;
 class Header extends Component
 {
     public $monthName;
-    
+
     public function render()
     {
-        return view('timex::calendar.header');
+        return view('timex::header.header');
     }
 }
