@@ -8,7 +8,7 @@
     @endunless
     @unless(config('timex.mini.isNextMeetingViewHidden'))
     <div @class([
-        'timex-event-widget',
+        'hidden lg:block',
         'relative group max-w-md rounded-lg bg-gray-400/10 dark:bg-gray-700',
     ])
     style="min-width: 14rem; max-width: 14rem;">

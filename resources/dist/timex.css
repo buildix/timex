@@ -28,23 +28,6 @@
     height: 65px;
 }
 
-.timex-day-month {
-    display: none;
-}
-
-.timex-event {
-    display: none;
-}
-
-.timex-event-widget {
-    display: none;
-}
-
-.timex-header-create-button {
-    display: none;
-}
-
-
 @media (min-width: 640px) {
     .timex-day {
         align-items: center;
@@ -61,9 +44,6 @@
         height: 65px;
     }
 
-    .timex-header-create-button {
-        display: initial;
-    }
 }
 
 @media (min-width: 1024px) {
@@ -71,21 +51,5 @@
         align-items: center;
         text-align: left;
         height: 130px;
-    }
-    .timex-event {
-        display: initial;
-        height: 88px;
-    }
-
-    .timex-day-month {
-        display: initial;
-    }
-
-    .timex-event-widget {
-        display: initial;
-    }
-
-    .timex-header-create-button {
-        display: initial;
     }
 }
