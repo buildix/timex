@@ -7,8 +7,11 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/buildix/timex.svg?style=flat-square)](https://packagist.org/packages/buildix/timex)
 
 
-<img width="1792" alt="timex-main" src="https://user-images.githubusercontent.com/2136612/203271680-8907004a-dd29-4adb-8de8-05cac681ba63.png">
+<img width="1865" alt="TiMEX-Main" src="https://user-images.githubusercontent.com/2136612/206989777-fe169c5b-147a-450a-bd98-2df67eda8989.png">
 
+|   |  |   |
+| ------------- | ------------- | ------------- |
+| <img width="582" alt="Снимок экрана 2022-12-12 в 10 45 08" src="https://user-images.githubusercontent.com/2136612/206991069-3a8f8d49-f421-49df-a4b8-2a681a6b4a9d.png">  | <img width="582" alt="Снимок экрана 2022-12-12 в 10 45 13" src="https://user-images.githubusercontent.com/2136612/206991086-8ce8adf3-9519-431e-a145-acb5a4d4f309.png">  | <img width="582" alt="Снимок экрана 2022-12-12 в 10 45 32" src="https://user-images.githubusercontent.com/2136612/206991096-d063dc90-ba2e-479b-b3c6-1a0b467c2ea2.png">  |
 
 ## Installation
 
@@ -263,8 +266,9 @@ getEvents(): array {
 
 ### Event resource
 
-<img width="1792" alt="event-light" src="https://user-images.githubusercontent.com/2136612/203271883-cd9c9114-74b0-4c2a-8aa8-79d986523bb4.png">
-<img width="1792" alt="event-dark" src="https://user-images.githubusercontent.com/2136612/203271937-9d746cb7-2043-428c-a780-b14e65a68645.png">
+<img width="1865" alt="TiMEX-Resource" src="https://user-images.githubusercontent.com/2136612/206990201-4f36d7f9-55fd-4b89-b4e4-dec7846943e3.png">
+<img width="1865" alt="TiMEX-Resource-edit" src="https://user-images.githubusercontent.com/2136612/206990224-8396061a-b439-4b12-a724-ac73402b587b.png">
+
 
 
 By default TiMEX register `EventResource` to your navigation panel, if you would like to disable it, simply set `shouldRegisterNavigation` to `false` in TiMEX config:
@@ -319,9 +323,9 @@ You may change the class to your preferences and define which columns will be us
 Package comes with pre-installed Filament page with all necessary configurations. 
 If you need to change label naming, slug, navigation group, etc, go ahead to TiMEX config. 
 
-<img width="1792" alt="timex-main-dark" src="https://user-images.githubusercontent.com/2136612/203272109-3ec01efa-dd3f-4d4d-9b5b-f7f8a8651629.png">
-<img width="1792" alt="timex-light" src="https://user-images.githubusercontent.com/2136612/203272127-d5bf52d8-ca4f-4716-bac3-3da9c9584041.png">
-<img width="1792" alt="timex-dark" src="https://user-images.githubusercontent.com/2136612/203272145-28d209ed-4230-4a79-a2b2-0c90c9028bfc.png">
+<img width="1865" alt="TiMEX-Page1" src="https://user-images.githubusercontent.com/2136612/206990428-ea9267b5-d13d-4a14-9db0-45ffdbf32012.png">
+<img width="1865" alt="TiMEX-Page2" src="https://user-images.githubusercontent.com/2136612/206990449-f95a9fea-7382-478d-ba42-810ae10145c9.png">
+
 
 
 ### Dynamic icon set & labels
