@@ -42,6 +42,7 @@ return [
         'start' => Carbon::MONDAY,
         'end' =>  Carbon::SUNDAY
     ],
+    'isDayClickEnabled' => true,
 
     'dayName' => 'minDayName', // minDayName or dayName or shortDayName
 
@@ -59,7 +60,9 @@ return [
         'timex' => \Buildix\Timex\Pages\Timex::class,
         'slug' => 'timex',
         'group' => 'timex',
+        'sort' => 0,
         'shouldRegisterNavigation' => true,
+        'enablePolicy' => false,
         'modalWidth' => 'xl',
         'icon' => [
             'static' => true,
@@ -81,21 +84,51 @@ return [
             ],
         ],
         'buttons' => [
+            'hideYearNavigation' => false,
             'today' => [
                 'static' => false,
                 'format' => 'D MMM'
             ],
             'outlined' => true,
             'icons' => [
+                'previousYear' => 'heroicon-o-chevron-double-left',
+                'nextYear' => 'heroicon-o-chevron-double-right',
                 'previousMonth' => 'heroicon-o-chevron-left',
                 'nextMonth' => 'heroicon-o-chevron-right',
                 'createEvent' => 'heroicon-o-plus'
+            ],
+            'modal' => [
+                'submit' => [
+                    'outlined' => false,
+                    'color' => 'primary',
+                    'icon' => [
+                        'enabled' => true,
+                        'name' => 'heroicon-o-save'
+                    ],
+                ],
+                'cancel' => [
+                    'outlined' => false,
+                    'color' => 'secondary',
+                    'icon' => [
+                        'enabled' => true,
+                        'name' => 'heroicon-o-x-circle'
+                    ],
+                ],
+                'delete' => [
+                    'outlined' => false,
+                    'color' => 'danger',
+                    'icon' => [
+                        'enabled' => true,
+                        'name' => 'heroicon-o-trash'
+                    ],
+                ],
             ],
         ],
     ],
 
     'resources' => [
         'event' => \Buildix\Timex\Resources\EventResource::class,
+        'sort' => 1,
         'icon' => 'heroicon-o-calendar',
         'slug' => 'timex-events',
         'shouldRegisterNavigation' => true,
@@ -111,6 +144,9 @@ return [
     'tables' => [
         'event' => [
             'name' => 'timex_events',
+        ],
+        'category' => [
+            'name' => 'timex_categories',
         ],
     ],
 
@@ -139,7 +175,7 @@ return [
     |
     */
             'model' => [
-                'class' => \App\Models\Category::class, // \App\Models\Category::class
+                'class' => \Buildix\Timex\Models\Category::class, // \App\Models\Category::class
                 'key' => 'id', // "id" is a DB column - you can change by any primary key
                 'value' => 'value', // "value" is a DB column - it used for Select options and displays on Resource page
                 'icon' => 'icon', // "icon" is a DB column - define here any heroicon- icon

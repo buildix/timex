@@ -42,9 +42,20 @@ trait InteractWithEvents
     public function eventUpdated($data)
     {
         $event = self::getModel()::query()->find($data['id']);
-        $event->update([
-            'start' => Carbon::createFromTimestamp($data['toDate'])
-        ]);
+        $eventData = $event->getAttributes();
+        $end = Carbon::create($eventData['end']);
+        $toDate = Carbon::createFromTimestamp($data['toDate']);
+
+        if ($eventData['organizer'] == \Auth::id()){
+            $event->update([
+                'start' => Carbon::createFromTimestamp($data['toDate']),
+            ]);
+            if ($end < $toDate){
+                $event->update([
+                    'end' => $toDate
+                ]);
+            }
+        }
         $this->emit('modelUpdated',['id' => $this->id]);
         $this->emit('updateWidget',['id' => $this->id]);
     }

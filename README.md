@@ -1,14 +1,17 @@
 ![timex-logo](https://user-images.githubusercontent.com/2136612/202689778-eb013a03-b0fa-4c0e-941c-7d999c09fd6f.jpeg)
 
 
-## TIMEX - calendar plugin for [filament](https://github.com/filamentphp/filament)
+## TiMEX - calendar plugin for [filament](https://github.com/filamentphp/filament)
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/buildix/timex.svg?style=flat-square)](https://packagist.org/packages/buildix/timex)
 [![Total Downloads](https://img.shields.io/packagist/dt/buildix/timex.svg?style=flat-square)](https://packagist.org/packages/buildix/timex)
 
 
-<img width="1792" alt="timex-main" src="https://user-images.githubusercontent.com/2136612/203271680-8907004a-dd29-4adb-8de8-05cac681ba63.png">
+<img width="1865" alt="TiMEX-Main" src="https://user-images.githubusercontent.com/2136612/206989777-fe169c5b-147a-450a-bd98-2df67eda8989.png">
 
+|   |  |   |
+| ------------- | ------------- | ------------- |
+| <img width="582" alt="Снимок экрана 2022-12-12 в 10 45 08" src="https://user-images.githubusercontent.com/2136612/206991069-3a8f8d49-f421-49df-a4b8-2a681a6b4a9d.png">  | <img width="582" alt="Снимок экрана 2022-12-12 в 10 45 13" src="https://user-images.githubusercontent.com/2136612/206991086-8ce8adf3-9519-431e-a145-acb5a4d4f309.png">  | <img width="582" alt="Снимок экрана 2022-12-12 в 10 45 32" src="https://user-images.githubusercontent.com/2136612/206991096-d063dc90-ba2e-479b-b3c6-1a0b467c2ea2.png">  |
 
 ## Installation
 
@@ -18,6 +21,13 @@ You can install the package via composer:
 composer require buildix/timex
 ```
 
+After your fresh installation, you may install all neccessary assets via the following command:
+
+```bash
+php artisan timex:install
+```
+<hr>
+<details><summary>Publishing vendor assets</summary>
 You can publish and run the migrations with:
 
 ```bash
@@ -34,7 +44,7 @@ In your newly created migration file add the following:
 
 ```php
 Schema::create('timex-events', function ($table) {
-        $table->json("participants")->nullable;
+        $table->json("participants")->nullable();
     });
 ```
 
@@ -43,7 +53,8 @@ You can publish the config file with:
 ```bash
 php artisan vendor:publish --tag="timex-config"
 ```
-
+</details>
+<br>
 <details><summary>TiMEX Config</summary>
 <p>
 
@@ -53,7 +64,7 @@ php artisan vendor:publish --tag="timex-config"
 return [
     /*
     |--------------------------------------------------------------------------
-    | TIMEX Icon set
+    | TiMEX Icon set
     |--------------------------------------------------------------------------
     |
     | Don't change that prefix, otherwise icon set will not work.
@@ -64,7 +75,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | TIMEX Mini widget
+    | TiMEX Mini widget
     |--------------------------------------------------------------------------
     |
     | You can disable or enable individually widgets or entirely the whole view.
@@ -79,7 +90,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | TIMEX Calendar configurations
+    | TiMEX Calendar configurations
     |--------------------------------------------------------------------------
     |
     | Change according to your locale.
@@ -95,10 +106,10 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | TIMEX Resources & Pages
+    | TiMEX Resources & Pages
     |--------------------------------------------------------------------------
     |
-    | By default TIMEX out of box will work, just make sure you make migration.
+    | By default TiMEX out of box will work, just make sure you make migration.
     | But you can also make your own Model and Filament resource and update config accordingly
     |
     */
@@ -129,12 +140,15 @@ return [
             ],
         ],
         'buttons' => [
+            'hideYearNavigation' => false,
             'today' => [
                 'static' => false,
                 'format' => 'D MMM'
             ],
             'outlined' => true,
             'icons' => [
+                'previousYear' => 'heroicon-o-chevron-double-left',
+                'nextYear' => 'heroicon-o-chevron-double-right',
                 'previousMonth' => 'heroicon-o-chevron-left',
                 'nextMonth' => 'heroicon-o-chevron-right',
                 'createEvent' => 'heroicon-o-plus'
@@ -164,7 +178,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | TIMEX Event categories
+    | TiMEX Event categories
     |--------------------------------------------------------------------------
     |
     | Categories names are used to define colors & icons.
@@ -223,10 +237,11 @@ return [
 
 </p>
 </details>
+<hr>
 
 ## Usage
 
-After your fresh installation, TIMEX calendar is working out of the box (make sure to run migration) and start managing your time.
+After your fresh installation, TiMEX calendar is working out of the box (make sure to run migration) and start managing your time.
 
 ### EventItem
 
@@ -251,8 +266,9 @@ getEvents(): array {
 
 ### Event resource
 
-<img width="1792" alt="event-light" src="https://user-images.githubusercontent.com/2136612/203271883-cd9c9114-74b0-4c2a-8aa8-79d986523bb4.png">
-<img width="1792" alt="event-dark" src="https://user-images.githubusercontent.com/2136612/203271937-9d746cb7-2043-428c-a780-b14e65a68645.png">
+<img width="1865" alt="TiMEX-Resource" src="https://user-images.githubusercontent.com/2136612/206990201-4f36d7f9-55fd-4b89-b4e4-dec7846943e3.png">
+<img width="1865" alt="TiMEX-Resource-edit" src="https://user-images.githubusercontent.com/2136612/206990224-8396061a-b439-4b12-a724-ac73402b587b.png">
+
 
 
 By default TiMEX register `EventResource` to your navigation panel, if you would like to disable it, simply set `shouldRegisterNavigation` to `false` in TiMEX config:
@@ -307,9 +323,9 @@ You may change the class to your preferences and define which columns will be us
 Package comes with pre-installed Filament page with all necessary configurations. 
 If you need to change label naming, slug, navigation group, etc, go ahead to TiMEX config. 
 
-<img width="1792" alt="timex-main-dark" src="https://user-images.githubusercontent.com/2136612/203272109-3ec01efa-dd3f-4d4d-9b5b-f7f8a8651629.png">
-<img width="1792" alt="timex-light" src="https://user-images.githubusercontent.com/2136612/203272127-d5bf52d8-ca4f-4716-bac3-3da9c9584041.png">
-<img width="1792" alt="timex-dark" src="https://user-images.githubusercontent.com/2136612/203272145-28d209ed-4230-4a79-a2b2-0c90c9028bfc.png">
+<img width="1865" alt="TiMEX-Page1" src="https://user-images.githubusercontent.com/2136612/206990428-ea9267b5-d13d-4a14-9db0-45ffdbf32012.png">
+<img width="1865" alt="TiMEX-Page2" src="https://user-images.githubusercontent.com/2136612/206990449-f95a9fea-7382-478d-ba42-810ae10145c9.png">
+
 
 
 ### Dynamic icon set & labels

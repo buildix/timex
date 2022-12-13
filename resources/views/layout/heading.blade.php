@@ -1,19 +1,18 @@
-@php
-    $isDayViewHidden = config('timex.mini.isDayViewHidden');
-    $isEventViewHidden = config('timex.mini.isNextMeetingViewHidden');
-@endphp
 <div class="h-10 pr-2 flex">
+    @unless(config('timex.mini.isDayViewHidden'))
     <div @class([
-        'hidden' => $isDayViewHidden,
-        'pr-2' => !$isEventViewHidden
+        'pr-2' => !config('timex.mini.isNextMeetingViewHidden')
     ])>
         <livewire:timex-day-widget wire:key="{{rand()}}" wire:poll/>
     </div>
+    @endunless
+    @unless(config('timex.mini.isNextMeetingViewHidden'))
     <div @class([
-        'hidden' => $isEventViewHidden,
+        'hidden lg:block',
         'relative group max-w-md rounded-lg bg-gray-400/10 dark:bg-gray-700',
     ])
-    style="min-width: 12rem; max-width: 12rem;">
+    style="min-width: 14rem; max-width: 14rem;">
         <livewire:timex-event-widget wire:key="{{rand()}}" wire:poll/>
     </div>
+    @endunless
 </div>

@@ -7,24 +7,55 @@ use Closure;
 
 class EventItem
 {
-    protected $eventID;
-    protected string $subject;
     protected ?string $body = null;
-    public $start;
-    public $end;
-    public ?string $color = null;
-    public $startTime;
-    public $endTime;
-    protected $type;
-    protected ?string $icon = null;
     protected ?string $category = null;
+    public ?string $color = null;
+    public $end;
+    public $endTime;
+    protected $eventID;
+    protected ?string $icon = null;
+    public bool $isAllDay;
     public $organizer;
     public $participants = [];
+    public $start;
+    public $startTime;
+    protected string $subject;
+    protected $type;
+
+
 
 
     final public function __construct($eventID)
     {
             $this->eventID($eventID);
+    }
+
+    public function body(?string $body): static
+    {
+        $this->body = $body;
+
+        return $this;
+    }
+
+    public function category(?string $category): static
+    {
+        $this->category = $category;
+
+        return $this;
+    }
+
+    public function color(?string $color): static
+    {
+        $this->color = $color;
+
+        return $this;
+    }
+
+    public function end(Carbon $end): static
+    {
+        $this->end = $end->setHour(0)->setMinute(0)->setSeconds(0)->timestamp;
+
+        return $this;
     }
 
     public function eventID($eventID)
@@ -37,13 +68,6 @@ class EventItem
     public static function make($eventID): static
     {
         return app(static::class, ['eventID' => $eventID]);
-    }
-
-    public function category(?string $category): static
-    {
-        $this->category = $category;
-
-        return $this;
     }
 
     public function getCategory(): ?string
@@ -70,33 +94,11 @@ class EventItem
         return $this->startTime;
     }
 
-    public function end(Carbon $end): static
-    {
-        $this->end = $end->setHour(0)->setMinute(0)->setSeconds(0)->timestamp;
-
-        return $this;
-    }
-
     public function subject(string $subject): static
     {
         $this->subject = $subject;
 
         return $this;
-    }
-
-    public function body(?string $body): static
-    {
-        $this->body = $body;
-
-        return $this;
-
-    }
-    public function color(?string $color): static
-    {
-        $this->color = $color;
-
-        return $this;
-
     }
 
     public function organizer(string $organizer)
@@ -112,7 +114,6 @@ class EventItem
 
         return $this;
     }
-
 
     public function getColor(): ?string
     {
@@ -156,9 +157,22 @@ class EventItem
         return $this;
     }
 
+    public function isAllDay(bool $isAllDay): static
+    {
+        $this->isAllDay = $isAllDay;
+
+        return $this;
+
+    }
+
     public function getIcon(): ?string
     {
         return $this->icon;
+    }
+
+    public function getIsAllDay(): bool
+    {
+        return $this->isAllDay;
     }
 
 }

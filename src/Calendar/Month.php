@@ -26,7 +26,9 @@ class Month extends Component
         'modelUpdated' => 'loaded',
         'onTodayClick' => 'onTodayClick',
         'onPrevClick' => 'onPreviousMonthClick',
-        'onNextClick' => 'onNextMonthClick'
+        'onNextClick' => 'onNextMonthClick',
+        'onNextYearClick' => 'onNextYearClick',
+        'onPreviousYearClick' => 'onPreviousYearClick',
     ];
 
 
@@ -97,7 +99,7 @@ class Month extends Component
 
     public function mount()
     {
-        $this->monthName = today()->monthName;
+        $this->monthName = $this->getMonthName(today());
     }
 
     public function render()
@@ -108,7 +110,7 @@ class Month extends Component
     public function onPreviousMonthClick()
     {
         $this->today = $this->today->subMonth();
-        $this->monthName = $this->today->monthName;
+        $this->monthName = $this->getMonthName($this->today);
         $this->setCalendar();
         $this->loaded();
         $this->emitUp('monthNameChanged',$this->monthName,$this->today->year);
@@ -117,7 +119,25 @@ class Month extends Component
     public function onNextMonthClick()
     {
         $this->today = $this->today->addMonth();
-        $this->monthName = $this->today->monthName;
+        $this->monthName = $this->getMonthName($this->today);
+        $this->setCalendar();
+        $this->loaded();
+        $this->emitUp('monthNameChanged',$this->monthName,$this->today->year);
+    }
+
+    public function onNextYearClick()
+    {
+        $this->today = $this->today->addYear();
+        $this->monthName = $this->getMonthName($this->today);
+        $this->setCalendar();
+        $this->loaded();
+        $this->emitUp('monthNameChanged',$this->monthName,$this->today->year);
+    }
+
+    public function onPreviousYearClick()
+    {
+        $this->today = $this->today->subYear();
+        $this->monthName = $this->getMonthName($this->today);
         $this->setCalendar();
         $this->loaded();
         $this->emitUp('monthNameChanged',$this->monthName,$this->today->year);
@@ -126,7 +146,7 @@ class Month extends Component
     public function onTodayClick()
     {
         $this->today = Carbon::today();
-        $this->monthName = $this->today->monthName;
+        $this->monthName = $this->getMonthName($this->today);
         $this->setCalendar();
         $this->loaded();
         $this->emitUp('monthNameChanged',$this->monthName,$this->today->year);
@@ -167,6 +187,12 @@ class Month extends Component
     {
         $this->emitUp('eventUpdated',['id' => $eventID,'toDate' => $toDate]);
         $this->shouldSkipRender = true;
+    }
+
+    public function getMonthName($date){
+
+        return $date->monthName.' '.$date->year;
+
     }
 
 

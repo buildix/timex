@@ -6,8 +6,10 @@ use BladeUI\Icons\Factory;
 use Buildix\Timex\Calendar\Day;
 use Buildix\Timex\Calendar\Event;
 use Buildix\Timex\Calendar\EventList;
+use Buildix\Timex\Calendar\Header;
 use Buildix\Timex\Calendar\Month;
 use Buildix\Timex\Calendar\Week;
+use Buildix\Timex\Commands\SetTableNameCommand;
 use Buildix\Timex\Widgets\Mini\DayWidget;
 use Buildix\Timex\Widgets\Mini\EventWidget;
 use Filament\Facades\Filament;
@@ -15,6 +17,7 @@ use Filament\PluginServiceProvider;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\View\View;
 use Livewire\Livewire;
+use Spatie\LaravelPackageTools\Commands\InstallCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 use Buildix\Timex\Commands\TimexCommand;
@@ -42,7 +45,14 @@ class TimexServiceProvider extends PluginServiceProvider
             ->hasViews()
             ->hasAssets()
             ->hasTranslations()
-            ->hasMigration('create_timex_tables');
+            ->hasMigration('create_timex_tables')
+            ->hasInstallCommand(function (InstallCommand $command){
+                $command
+                    ->publishConfigFile()
+                    ->publishMigrations()
+                    ->askToRunMigrations()
+                    ->askToStarRepoOnGitHub('buildix/timex');
+            });
     }
 
     public function boot()
@@ -54,6 +64,7 @@ class TimexServiceProvider extends PluginServiceProvider
         Livewire::component('timex-event-widget',EventWidget::class);
         Livewire::component('timex-day-widget',DayWidget::class);
         Livewire::component('timex-event-list',EventList::class);
+        Livewire::component('timex-header',Header::class);
 
         $this->registerConfig();
 

@@ -27,9 +27,6 @@
     text-align: left;
     height: 65px;
 }
-.timex-event {
-    visibility: hidden;
-}
 
 @media (min-width: 640px) {
     .timex-day {
@@ -37,9 +34,7 @@
         text-align: left;
         height: 65px;
     }
-    .timex-event {
-        visibility: hidden;
-    }
+
 }
 
 @media (min-width: 768px) {
@@ -48,9 +43,7 @@
         text-align: left;
         height: 65px;
     }
-    .timex-event {
-        visibility: hidden;
-    }
+
 }
 
 @media (min-width: 1024px) {
@@ -58,32 +51,5 @@
         align-items: center;
         text-align: left;
         height: 130px;
-    }
-    .timex-event {
-        visibility: visible;
-        height: 88px;
-    }
-}
-
-@media (min-width: 1280px) {
-    .timex-day {
-        align-items: center;
-        text-align: left;
-        height: 130px;
-    }
-    .timex-event {
-        visibility: visible;
-        height: 88px;
-    }
-}
-
-@media (min-width: 1536px) {
-    .timex-day {
-        align-items: center;
-        text-align: left;
-        height: 130px;
-    }
-    .timex-event {
-        height: 88px;
     }
 }

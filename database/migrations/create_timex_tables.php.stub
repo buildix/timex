@@ -24,6 +24,13 @@ return new class extends Migration
             $table->timestamps();
         });
 
+        Schema::create(config('timex.tables.category.name'), function (Blueprint $table){
+            $table->uuid('id')->primary();
+            $table->string('value');
+            $table->string('icon')->nullable();
+            $table->string('color')->nullable();
+        });
+
     }
 
     /**
@@ -34,5 +41,6 @@ return new class extends Migration
     public function down()
     {
         Schema::dropIfExists(config('timex.tables.event.name'));
+        Schema::dropIfExists(config('timex.tables.category.name'));
     }
 };
