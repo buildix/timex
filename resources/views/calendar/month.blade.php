@@ -13,4 +13,5 @@
             </div>
         @endforeach
     </div>
+{{--    <livewire:timex-event-list/>--}}
 </div>

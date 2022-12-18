@@ -46,6 +46,10 @@ return [
 
     'dayName' => 'minDayName', // minDayName or dayName or shortDayName
 
+    'dropDownCols' => 3,
+
+    'isPastCreationEnabled' => false,
+
     /*
     |--------------------------------------------------------------------------
     | TIMEX Resources & Pages
@@ -121,6 +125,20 @@ return [
                         'enabled' => true,
                         'name' => 'heroicon-o-trash'
                     ],
+                ],
+                'edit' => [
+                    'outlined' => false,
+                    'color' => 'primary',
+                    'icon' => [
+                        'enabled' => true,
+                        'name' => 'heroicon-o-pencil-alt'
+                    ],
+                ],
+                'view' => [
+                    'time' => 'heroicon-o-clock',
+                    'category' => 'heroicon-o-tag',
+                    'body' => 'heroicon-o-annotation',
+                    'participants' => 'heroicon-o-user-group',
                 ],
             ],
         ],

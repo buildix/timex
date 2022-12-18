@@ -9,6 +9,7 @@ return [
         'submit' => 'Submit',
         'cancel' => 'Cancel',
         'delete' => 'Delete',
+        'edit' => 'Edit',
     ],
     'events' => [
         'empty' => 'No upcoming :label'
@@ -20,7 +21,8 @@ return [
       'allDay' => 'All day',
       'start' => 'Start',
       'end' => 'End',
-      'participants' => 'Participants'
+      'participants' => 'Participants',
+      'attachments' => 'Attachments',
 
     ],
     'event-list' => [

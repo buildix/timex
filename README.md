@@ -9,9 +9,9 @@
 
 <img width="1865" alt="TiMEX-Main" src="https://user-images.githubusercontent.com/2136612/206989777-fe169c5b-147a-450a-bd98-2df67eda8989.png">
 
-|   |  |   |
-| ------------- | ------------- | ------------- |
-| <img width="582" alt="Снимок экрана 2022-12-12 в 10 45 08" src="https://user-images.githubusercontent.com/2136612/206991069-3a8f8d49-f421-49df-a4b8-2a681a6b4a9d.png">  | <img width="582" alt="Снимок экрана 2022-12-12 в 10 45 13" src="https://user-images.githubusercontent.com/2136612/206991086-8ce8adf3-9519-431e-a145-acb5a4d4f309.png">  | <img width="582" alt="Снимок экрана 2022-12-12 в 10 45 32" src="https://user-images.githubusercontent.com/2136612/206991096-d063dc90-ba2e-479b-b3c6-1a0b467c2ea2.png">  |
+| Mobile view 1                                                                                                                                                          | Mobile view 2                                                                                                                                                          | Mobile view 3                                                                                                                                                          |
+|------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| <img width="582" alt="Снимок экрана 2022-12-12 в 10 45 08" src="https://user-images.githubusercontent.com/2136612/206991069-3a8f8d49-f421-49df-a4b8-2a681a6b4a9d.png"> | <img width="582" alt="Снимок экрана 2022-12-12 в 10 45 13" src="https://user-images.githubusercontent.com/2136612/206991086-8ce8adf3-9519-431e-a145-acb5a4d4f309.png"> | <img width="582" alt="Снимок экрана 2022-12-12 в 10 45 32" src="https://user-images.githubusercontent.com/2136612/206991096-d063dc90-ba2e-479b-b3c6-1a0b467c2ea2.png"> |
 
 ## Installation
 
@@ -21,7 +21,7 @@ You can install the package via composer:
 composer require buildix/timex
 ```
 
-After your fresh installation, you may install all neccessary assets via the following command:
+After your fresh installation, you may install all necessary assets via the following command:
 
 ```bash
 php artisan timex:install
@@ -43,7 +43,7 @@ php artisan make:migration add_participants_to_timex_table --table=timex-events
 In your newly created migration file add the following:
 
 ```php
-Schema::create('timex-events', function ($table) {
+Schema::table('timex-events', function ($table) {
         $table->json("participants")->nullable();
     });
 ```
@@ -262,6 +262,14 @@ getEvents(): array {
         //
     ];
 }
+```
+
+### Event attachments
+
+You can attach files to your events via adding `attachments` column to your database:
+
+```php
+php artisan make:timex-alter-table your_table_name
 ```
 
 ### Event resource

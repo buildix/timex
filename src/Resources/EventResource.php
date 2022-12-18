@@ -7,10 +7,13 @@ use Carbon\Carbon;
 use Filament\Forms\Components\Card;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Hidden;
+use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TagsInput;
 use Filament\Forms\Components\TextInput;
@@ -19,11 +22,15 @@ use Filament\Forms\Components\Toggle;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
+use Filament\Tables\Actions\DeleteAction;
+use Filament\Tables\Actions\DeleteBulkAction;
 use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Columns\TagsColumn;
 use Filament\Tables\Columns\TextColumn;
 use Illuminate\Database\Eloquent\Model;
 use Buildix\Timex\Resources\EventResource\Pages;
+use Illuminate\Support\Collection;
+use function PHPUnit\Framework\isEmpty;
 
 class EventResource extends Resource
 {
@@ -179,6 +186,23 @@ class EventResource extends Resource
                             return $get('isAllDay');
                         }),
                 ])->columnSpanFull(),
+                Section::make('Attachments')->schema([
+                    FileUpload::make('attachments')
+                        ->multiple()
+                        ->preserveFilenames()
+                        ->disablePreview()
+                        ->disableLabel()
+                        ->enableDownload()
+                        ->enableOpen()
+                ])
+                ->heading(trans('timex::timex.event.attachments'))
+                ->hidden(!in_array('attachments',\Schema::getColumnListing(self::getEventTableName())))
+                ->columnSpanFull()
+                ->collapsible()
+                ->collapsed(function ($get){
+                    return $get('attachments') == null ? true : false;
+                })
+                ->compact(),
             ]);
     }
 
@@ -268,8 +292,24 @@ class EventResource extends Resource
                             ->createOptionUsing(function ($data){
                                 self::getCategoryModel()::query()->create($data);
                             })
+                    ]),
+                    Section::make('Attachments')->schema([
+                            FileUpload::make('attachments')
+                                ->multiple()
+                                ->preserveFilenames()
+                                ->disablePreview()
+                                ->disableLabel()
+                                ->enableDownload()
+                                ->enableOpen()
                     ])
-                ])->columnSpan(1)
+                    ->heading(trans('timex::timex.event.attachments'))
+                    ->hidden(!in_array('attachments',\Schema::getColumnListing(self::getEventTableName())))
+                    ->collapsible()
+                    ->compact()
+                    ->collapsed(function ($get){
+                        return $get('attachments') == null ? true : false;
+                    }),
+                ])->columnSpan(1),
             ]),
         ];
     }
@@ -309,7 +349,14 @@ class EventResource extends Resource
                             return config('timex.categories.colors')[$record->category] ?? "primary";
                         }
                     })
-            ])->defaultSort('start');
+            ])->defaultSort('start')
+            ->bulkActions([
+                DeleteBulkAction::make()->action(function (Collection $records){
+                    return $records->each(function ($record){
+                        return $record->organizer == \Auth::id() ? $record->delete() : '';
+                    });
+                })
+            ]);
     }
 
     public static function getPages(): array
@@ -324,6 +371,21 @@ class EventResource extends Resource
     public static function getGloballySearchableAttributes(): array
     {
         return [];
+    }
+
+    public static function canEdit(Model $record): bool
+    {
+        return $record->organizer == \Auth::id();
+    }
+
+    public static function canDelete(Model $record): bool
+    {
+        return $record->organizer == \Auth::id();
+    }
+
+    public static function canForceDelete(Model $record): bool
+    {
+        return $record->organizer == \Auth::id();
     }
 
 }
