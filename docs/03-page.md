@@ -76,7 +76,7 @@ String (default: `timex-timex`)
 ```
 Default TiMEX icon, you may change it to any other installed icon packages for the static icon on your navigation panel
 
-#### label (#navigation > #static)
+### label (#navigation > #static)
 Boolean (default: `false`)
 ```php
 'pages' => [
@@ -87,7 +87,7 @@ Boolean (default: `false`)
 ```
 If it's `true`, the navigation label will be changed from current day label to static stated in `lang/timex.php`
 
-#### label (#navigation > #format)
+### label (#navigation > #format)
 Carbon formatter (default: `dddd, D MMM`)
 ```php
 'pages' => [
