@@ -10,10 +10,10 @@
     * [users](#users)
 * [#tables](##tables)
 <!-- TOC -->
-### TiMEX filament resource, laravel models & DB tables
+# TiMEX filament resource, laravel models & DB tables
 
-#### #resources
-###### event (resource)
+## #resources
+### event (resource)
 - Filament resource class (default: `\Buildix\EventResource::class`)
     ```php
     'resources' => [
@@ -22,7 +22,7 @@
     ```
     You may create your own filament resource class & pages in order to list / manage your events. After creating your filament resource, make sure to register it in `timex.php` config
 
-###### sort
+### sort
 - Integer (default: `1`)
     ```php
     'resources' => [
@@ -31,7 +31,7 @@
     ```
     Filament navigation item sorting
 
-###### icon
+### icon
 - String (default: `heroicon-o-calendar`)
     ```php
     'resources' => [
@@ -40,7 +40,7 @@
     ```
     Filament navigation icon
 
-###### slug
+### slug
 - String (default: `timex-events`)
     ```php
     'resources' => [
@@ -49,7 +49,7 @@
     ```
     Slug is used to define the url of your resource page
 
-###### shouldRegisterNavigation
+### shouldRegisterNavigation
 - Boolean (default: `true`)
     ```php
     'resources' => [
@@ -60,8 +60,8 @@
 
     If [enablePolicy](03-page.md) is set to `true` option `shouldRegisterNavigation` will be ignored and access to TiMEX filament resource will be configured in accordance with your laravel policies made for TiMEX event model
 
-#### #models
-###### event (model)
+## #models
+### event (model)
 - Laravel model (default: `\Buildix\Event::class`)
     ```php
     'models' => [
@@ -69,7 +69,7 @@
     ],
     ```
     You may create your own laravel model to store your events. After creating your laravel model, make sure to register it in `timex.php` config
-###### users
+### users
 - Laravel model (default: `\App\Models\User::class`)
     ```php
     'models' => [
@@ -81,8 +81,8 @@
     ],
     ```
 
-#### #tables
-###### event (#name)
+## #tables
+### event (#name)
 - String (default: `timex_events`)
     ```php
     'tables' => [
@@ -92,7 +92,7 @@
     ],
     ```
     Name of your DB table to store TiMEX events. You may change to any other name that fits your application.
-###### category (#name)
+### category (#name)
 - String (default: `timex_categories`)
     ```php
     'tables' => [
