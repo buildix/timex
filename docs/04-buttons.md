@@ -98,7 +98,7 @@ Boolean (default: `true`)
               ],
           ],
   ```
-**name**
+**#name**
 
 Any icon package you have installed
   ```php
