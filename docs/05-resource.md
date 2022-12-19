@@ -58,7 +58,7 @@
     ```
   If it's `true`, TiMEX filament resource will be registered on your navigation panel
 
-    If [enablePolicy](03-page.md) is te to `true` option `shouldRegisterNavigation` will be ignored and access to TiMEX filament resource will be configured in accordance with your laravel policies made for TiMEX event model
+    If [enablePolicy](03-page.md) is set to `true` option `shouldRegisterNavigation` will be ignored and access to TiMEX filament resource will be configured in accordance with your laravel policies made for TiMEX event model
 
 #### #models
 ###### event (model)
