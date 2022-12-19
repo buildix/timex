@@ -1,6 +1,6 @@
-## #buttons
+# #buttons
 
-### hideYearNavigation
+## hideYearNavigation
 Boolean (default: `false`)
 ```php
 'pages' => [
@@ -9,7 +9,7 @@ Boolean (default: `false`)
 ```
 If it's true, buttons to jump to next / previous year (with current month) will be hidden in navigation bar of TiMEX page
 
-### today (#static)
+## today (#static)
 Boolean (default: `false`)
 ```php
 'pages' => [
@@ -20,7 +20,7 @@ Boolean (default: `false`)
 ```
 If it's true, label for current day will be static in accordance with `lang/timex.php`
 
-### today (#format)
+## today (#format)
 Carbon formatter (default: `D MMM`)
 ```php
 'pages' => [
@@ -31,7 +31,7 @@ Carbon formatter (default: `D MMM`)
 ```
 You may change how the button label displayed in accordance with Carbon formats
 
-### outlined
+## outlined
 Boolean (default: `true`)
 ```php
 'pages' => [
@@ -40,7 +40,7 @@ Boolean (default: `true`)
 ```
 You may change how the buttons in navigation panel of TiMEX page are styled (outlined / filled)
 
-### icons
+## icons
 Default TiMEX icon set for buttons:
   - previousYear: `heroicon-o-chevron-double-left`
   - nextYear: `heroicon-o-chevron-double-right`
@@ -57,10 +57,10 @@ Default TiMEX icon set for buttons:
         'createEvent' => 'heroicon-o-plus'
     ],
 ```
-### modal
+## modal
 #submit / #cancel / #delete / #edit
 
-#### **#outlined**
+### **#outlined**
 Boolean (default: `true`)
 ```php
 'pages' => [
@@ -72,7 +72,7 @@ Boolean (default: `true`)
 ```
 You may change how the buttons in navigation panel of TiMEX page are styled (outlined / filled)
 
-#### **#color**
+### **#color**
 
 `primary` / `secondary` / `danger` / `primary` / 
 ```php
@@ -83,7 +83,7 @@ You may change how the buttons in navigation panel of TiMEX page are styled (out
                 'color' => 'primary',
             ],
 ```
-#### **#icon**
+### **#icon**
 
 **enabled**
 
