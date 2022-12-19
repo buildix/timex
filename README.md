@@ -16,11 +16,11 @@
 ## Installation & use
 <!-- TOC -->
 * [Installation](docs/01-install.md)
-* [Config](02-config.md)
-* [Page configuration](03-page.md)
-* [Buttons configuration](04-buttons.md)
-* [Filament resource configuration](05-resource.md)
-* [TiMEX Categories configuration](06-categories.md)
+* [Config](docs/02-config.md)
+* [Page configuration](docs/03-page.md)
+* [Buttons configuration](docs/04-buttons.md)
+* [Filament resource configuration](docs/05-resource.md)
+* [TiMEX Categories configuration](docs/06-categories.md)
 <!-- TOC -->
 
 ## Demo
