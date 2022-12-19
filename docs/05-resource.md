@@ -60,6 +60,16 @@ If it's `true`, TiMEX filament resource will be registered on your navigation pa
 
 If [enablePolicy](03-page.md) is set to `true` option `shouldRegisterNavigation` will be ignored and access to TiMEX filament resource will be configured in accordance with your laravel policies made for TiMEX event model
 
+### isStartEndHidden
+Boolean (default: `false`)
+```php
+'resources' => [
+    'isStartEndHidden' => false,
+],
+```
+
+If it's `true`, startTime & endTime DateTimePickers would be hidden from create & edit forms. Labels for times would be also hidden from the calendar view
+
 ## #models
 ### event (model)
 Laravel model (default: `\Buildix\Event::class`)
