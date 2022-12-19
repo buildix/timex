@@ -278,7 +278,7 @@ If it's `true`, upcoming events widget on the header would be hidden
 Carbon instance (default: `Carbon::MONDAY`)
 ```php
 'week' => [
-'start' => Carbon::MONDAY,
+  'start' => Carbon::MONDAY,
 ],
 ```
 You can change start of week on the calendar in accordance with your locale by changing to e.g.: `Carbon::SUNDAY`
@@ -287,7 +287,7 @@ You can change start of week on the calendar in accordance with your locale by c
 Carbon instance (default: `Carbon::SUNDAY`)
 ```php
 'week' => [
-'end' =>  Carbon::SUNDAY
+  'end' =>  Carbon::SUNDAY
 ],
 ```
 You can change end of week on the calendar to e.g.: `Carbon::SATURDAY`
