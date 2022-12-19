@@ -60,7 +60,7 @@ Default TiMEX icon set for buttons:
 ### modal
 #submit / #cancel / #delete / #edit
 
-**#outlined**
+#### **#outlined**
 Boolean (default: `true`)
 ```php
 'pages' => [
@@ -72,40 +72,42 @@ Boolean (default: `true`)
 ```
 You may change how the buttons in navigation panel of TiMEX page are styled (outlined / filled)
 
-  - **#color**
-    - `primary` / `secondary` / `danger` / `primary` / 
-    ```php
-    'pages' => [
-        'buttons' => [
-            'modal' => [
-                'submit' => [
-                    'color' => 'primary',
-                ],
-    ```
-  - **#icon**
-    - **enabled**
+#### **#color**
 
-    Boolean (default: `true`)
+`primary` / `secondary` / `danger` / `primary` / 
+```php
+'pages' => [
+    'buttons' => [
+        'modal' => [
+            'submit' => [
+                'color' => 'primary',
+            ],
+```
+#### **#icon**
+
+**enabled**
+
+Boolean (default: `true`)
   ```php
   'pages' => [
-      'buttons' => [
-          'modal' => [
-              'submit' => [
-                  'icon' => [
-                      'enabled' => true,
-                  ],
+  'buttons' => [
+      'modal' => [
+          'submit' => [
+              'icon' => [
+                  'enabled' => true,
               ],
+          ],
   ```
-  - **name**
+**name**
 
-  Any icon package you have installed
+Any icon package you have installed
   ```php
   'pages' => [
       'buttons' => [
-          'modal' => [
-              'submit' => [
-                  'icon' => [
-                      'name' => 'heroicon-o-save'
-                  ],
-              ],
+      'modal' => [
+          'submit' => [
+              'icon' => [
+                  'name' => 'heroicon-o-save'
+          ],
+      ],
   ```
