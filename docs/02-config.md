@@ -245,10 +245,9 @@ return [
 ];
 ```
 </details>
-<hr>
 
-### #mini
-#### **isMiniCalendarEnabled**
+## #mini
+### **isMiniCalendarEnabled**
 Boolean (default: `true`)
 ```php
 'mini' => [
@@ -256,7 +255,7 @@ Boolean (default: `true`)
 ```
 If it's true, on the header of your page day view & upcoming events widget will be registered
 
-#### **isDayViewHidden**
+### **isDayViewHidden**
 Boolean (default: `false`)
 ```php
 'mini' => [
@@ -264,7 +263,7 @@ Boolean (default: `false`)
 ```
 If it's `true`, day view on the header would be hidden
 
-#### **isNextMeetingViewHidden**
+### **isNextMeetingViewHidden**
 Boolean (default: `false`)
 ```php
 'mini' => [
@@ -273,8 +272,8 @@ Boolean (default: `false`)
 ```
 If it's `true`, upcoming events widget on the header would be hidden
 
-### #week
-#### **start**
+## #week
+### **start**
 Carbon instance (default: `Carbon::MONDAY`)
 ```php
 'week' => [
@@ -283,7 +282,7 @@ Carbon instance (default: `Carbon::MONDAY`)
 ```
 You can change start of week on the calendar in accordance with your locale by changing to e.g.: `Carbon::SUNDAY`
 
-#### **end**
+### **end**
 Carbon instance (default: `Carbon::SUNDAY`)
 ```php
 'week' => [
@@ -292,14 +291,14 @@ Carbon instance (default: `Carbon::SUNDAY`)
 ```
 You can change end of week on the calendar to e.g.: `Carbon::SATURDAY`
 
-### #isDayClickEnabled
+## #isDayClickEnabled
 Boolean (default: `true`)
 ```php
 'isDayClickEnabled' => true,
 ```
 If it's true, you can click on any day on the calendar to create an event on that particular day
 
-### #dayName
+## #dayName
 Carbon formatter (default: `minDayName`)
 ```php
 'dayName' => 'minDayName',
@@ -309,14 +308,14 @@ Option is used to format how week day names will be displayed on your calendar:
 - `shortDayName`: Mon / Tue / Wed ...
 - `minDayName`: Mo / Tu / We ..
 
-### #dropDownCols
+## #dropDownCols
 Integer (default: `3`)
 ```php
 'dropDownCols' => 3,
 ```
 You can change the column grids on the year / month dropdown view
 
-### #isPastCreationEnabled
+## #isPastCreationEnabled
 Boolean (default: `false`)
 ```php
 'isPastCreationEnabled' => false,
