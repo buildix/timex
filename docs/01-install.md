@@ -30,7 +30,7 @@ php artisan timex:install
 If you wish, you may publish the configuration of the package using:
 
 ```bash
-php artisan vendor:publish --tag=filament-config
+php artisan vendor:publish --tag=timex-config
 ```
 
 ## Publishing translations
