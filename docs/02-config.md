@@ -248,7 +248,7 @@ return [
 <hr>
 
 ### #mini
-##### **isMiniCalendarEnabled**
+#### **isMiniCalendarEnabled**
 Boolean (default: `true`)
 ```php
 'mini' => [
@@ -256,41 +256,41 @@ Boolean (default: `true`)
 ```
 If it's true, on the header of your page day view & upcoming events widget will be registered
 
-- ###### **isDayViewHidden**
-  - Boolean (default: `false`)
-    ```php
-    'mini' => [
-        'isDayViewHidden' => false,
-    ```
-      If it's `true`, day view on the header would be hidden
+#### **isDayViewHidden**
+Boolean (default: `false`)
+```php
+'mini' => [
+    'isDayViewHidden' => false,
+```
+If it's `true`, day view on the header would be hidden
 
-- ###### **isNextMeetingViewHidden**
-  - Boolean (default: `false`)
-    ```php
-    'mini' => [
-        'isNextMeetingViewHidden' => false,
-    ],
-    ```
-      If it's `true`, upcoming events widget on the header would be hidden
+#### **isNextMeetingViewHidden**
+Boolean (default: `false`)
+```php
+'mini' => [
+    'isNextMeetingViewHidden' => false,
+],
+```
+If it's `true`, upcoming events widget on the header would be hidden
 
 ### #week
-- ###### **start**
-  - Carbon instance (default: `Carbon::MONDAY`)
-    ```php
-    'week' => [
-    'start' => Carbon::MONDAY,
-    ],
-    ```
-      You can change start of week on the calendar in accordance with your locale by changing to e.g.: `Carbon::SUNDAY`
+#### **start**
+Carbon instance (default: `Carbon::MONDAY`)
+```php
+'week' => [
+'start' => Carbon::MONDAY,
+],
+```
+You can change start of week on the calendar in accordance with your locale by changing to e.g.: `Carbon::SUNDAY`
 
-- ###### **end**
-  - Carbon instance (default: `Carbon::SUNDAY`)
-    ```php
-    'week' => [
-    'end' =>  Carbon::SUNDAY
-    ],
-    ```
-      You can change end of week on the calendar to e.g.: `Carbon::SATURDAY`
+#### **end**
+Carbon instance (default: `Carbon::SUNDAY`)
+```php
+'week' => [
+'end' =>  Carbon::SUNDAY
+],
+```
+You can change end of week on the calendar to e.g.: `Carbon::SATURDAY`
 
 ### #isDayClickEnabled
 Boolean (default: `true`)
