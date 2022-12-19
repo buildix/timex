@@ -90,11 +90,11 @@ You may change how the buttons in navigation panel of TiMEX page are styled (out
 Boolean (default: `true`)
   ```php
   'pages' => [
-  'buttons' => [
-      'modal' => [
-          'submit' => [
-              'icon' => [
-                  'enabled' => true,
+      'buttons' => [
+          'modal' => [
+              'submit' => [
+                  'icon' => [
+                      'enabled' => true,
               ],
           ],
   ```
@@ -104,10 +104,10 @@ Any icon package you have installed
   ```php
   'pages' => [
       'buttons' => [
-      'modal' => [
-          'submit' => [
-              'icon' => [
-                  'name' => 'heroicon-o-save'
+          'modal' => [
+              'submit' => [
+                  'icon' => [
+                      'name' => 'heroicon-o-save'
           ],
       ],
   ```
