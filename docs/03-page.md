@@ -1,5 +1,5 @@
-# #pages
-## timex
+## #pages
+### timex
 Filament page class (default: `\Buildix\Timex\Pages\Timex::class`)
 ```php
 'pages' => [
@@ -8,7 +8,7 @@ Filament page class (default: `\Buildix\Timex\Pages\Timex::class`)
 You may create your own filament page and extend `Buildix\Timex::class`
 All available methods on the parent page, you can override on your created page
 
-## slug
+### slug
 String (default: `timex`)
 ```php
 'pages' => [
@@ -16,7 +16,7 @@ String (default: `timex`)
 ```
 Slug is used to define the url of your calendar page
 
-## group
+### group
 String (default: `timex`)
 ```php
 'pages' => [
@@ -24,7 +24,7 @@ String (default: `timex`)
 ```
 Group defines filament navigation group item. You may change it to whatever you want in order to group your navigation items as you wish
 
-## sort
+### sort
 Integer (default: `0`)
 ```php
 'pages' => [
@@ -40,7 +40,7 @@ Boolean (default: `true`)
 ```
 If it's `true`, TiMEX page & TiMEX filament resource will be registered on your navigation panel
 
-## enablePolicy
+### enablePolicy
 Boolean (default: `false`)
 ```php
 'pages' => [
@@ -48,7 +48,7 @@ Boolean (default: `false`)
 ```
 If it's `true`, option `shouldRegisterNavigation` will be ignored and access to TiMEX page & TiMEX filament resource will be configured in accordance with your laravel policies made for TiMEX event model 
 
-## modalWidth
+### modalWidth
 String (default: `xl`)
 ```php
 'pages' => [
