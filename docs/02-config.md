@@ -248,13 +248,13 @@ return [
 <hr>
 
 ### #mini
-- ###### **isMiniCalendarEnabled**
-  - Boolean (default: `true`)
-    ```php
-    'mini' => [
-        'isMiniCalendarEnabled' => true,
-    ```
-      If it's true, on the header of your page day view & upcoming events widget will be registered
+##### **isMiniCalendarEnabled**
+Boolean (default: `true`)
+```php
+'mini' => [
+    'isMiniCalendarEnabled' => true,
+```
+If it's true, on the header of your page day view & upcoming events widget will be registered
 
 - ###### **isDayViewHidden**
   - Boolean (default: `false`)
