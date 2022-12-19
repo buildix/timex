@@ -44,8 +44,8 @@
                 'col-span-2 ml-2 truncate' => !$isWidgetEvent,
                 'col-span-2 ml-4 truncate' => $isWidgetEvent
             ])>
-            @if($isAllDay)
-                {{trans('timex::timex.event.allDay')}}
+            @if($isAllDay || config('timex.resources.isStartEndHidden',false))
+                {{config('timex.resources.isStartEndHidden',false) ? '' : trans('timex::timex.event.allDay')}}
             @else
                 {{\Carbon\Carbon::parse($startTime)->isoFormat('H:mm')}}
             @endif

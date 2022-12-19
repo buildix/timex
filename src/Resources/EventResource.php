@@ -133,8 +133,10 @@ class EventResource extends Resource
                         }),
                     DatePicker::make('start')
                         ->label(trans('timex::timex.event.start'))
+                        ->columnSpan(function (){
+                            return config('timex.resources.isStartEndHidden',false) ? 'full' : 2;
+                        })
                         ->inlineLabel()
-                        ->columnSpan(2)
                         ->default(today())
                         ->minDate(today())
                         ->required()
@@ -149,6 +151,7 @@ class EventResource extends Resource
                         ])
                         ->firstDayOfWeek(config('timex.week.start')),
                     TimePicker::make('startTime')
+                        ->hidden(config('timex.resources.isStartEndHidden',false))
                         ->withoutSeconds()
                         ->disableLabel()
                         ->required()
@@ -166,7 +169,9 @@ class EventResource extends Resource
                     DatePicker::make('end')
                         ->label(trans('timex::timex.event.end'))
                         ->inlineLabel()
-                        ->columnSpan(2)
+                        ->columnSpan(function (){
+                            return config('timex.resources.isStartEndHidden',false) ? 'full' : 2;
+                        })
                         ->default(today())
                         ->minDate(today())
                         ->reactive()
@@ -175,6 +180,7 @@ class EventResource extends Resource
                         ])
                         ->firstDayOfWeek(config('timex.week.start')),
                     TimePicker::make('endTime')
+                        ->hidden(config('timex.resources.isStartEndHidden',false))
                         ->withoutSeconds()
                         ->disableLabel()
                         ->reactive()
@@ -237,11 +243,14 @@ class EventResource extends Resource
                         DatePicker::make('start')
                             ->label(trans('timex::timex.event.start'))
                             ->inlineLabel()
-                            ->columnSpan(2)
+                            ->columnSpan(function (){
+                                return config('timex.resources.isStartEndHidden',false) ? 'full' : 2;
+                            })
                             ->default(today())
                             ->minDate(today())
                             ->firstDayOfWeek(config('timex.week.start')),
                         TimePicker::make('startTime')
+                            ->hidden(config('timex.resources.isStartEndHidden',false))
                             ->withoutSeconds()
                             ->disableLabel()
                             ->default(now()->setMinutes(0)->addHour())
@@ -255,11 +264,14 @@ class EventResource extends Resource
                         DatePicker::make('end')
                             ->label(trans('timex::timex.event.end'))
                             ->inlineLabel()
-                            ->columnSpan(2)
+                            ->columnSpan(function (){
+                                return config('timex.resources.isStartEndHidden',false) ? 'full' : 2;
+                            })
                             ->default(today())
                             ->minDate(today())
                             ->firstDayOfWeek(config('timex.week.start')),
                         TimePicker::make('endTime')
+                            ->hidden(config('timex.resources.isStartEndHidden',false))
                             ->withoutSeconds()
                             ->disableLabel()
                             ->reactive()

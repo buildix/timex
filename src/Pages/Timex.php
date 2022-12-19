@@ -182,7 +182,7 @@ class Timex extends Page
                     ->organizer($event->organizer)
                     ->participants($event?->participants)
                     ->start(Carbon::create($event->start))
-                    ->startTime($event->startTime);
+                    ->startTime($event?->startTime);
             })->toArray();
 
         return collect($events)->filter(function ($event){

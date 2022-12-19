@@ -14,13 +14,13 @@ return new class extends Migration
             $table->longText('body')->nullable();
             $table->string('category')->nullable();
             $table->date('end');
-            $table->time('endTime');
+            $table->time('endTime')->nullable();
             $table->boolean('isAllDay')->default(false);
             $table->foreignUuid('organizer');
             $table->json('participants')->nullable();
             $table->longText('subject');
             $table->date('start');
-            $table->time('startTime');
+            $table->time('startTime')->nullable();
 
             $table->timestamps();
         });
