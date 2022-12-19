@@ -59,6 +59,7 @@ Default TiMEX icon set for buttons:
 ```
 ### modal
 #submit / #cancel / #delete / #edit
+
 **#outlined**
 Boolean (default: `true`)
 ```php
