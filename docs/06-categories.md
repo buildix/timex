@@ -6,9 +6,7 @@
 <!-- TOC -->
 # Categories
 
-## #categories
-
-### isModelEnabled
+## isModelEnabled
 Boolean (default: `false`)
 ```php
 'categories' => [
@@ -16,7 +14,7 @@ Boolean (default: `false`)
 ```
 If it's true, Laravel model will be used for TiMEX event categories
 
-### model
+## model
 Laravel model class (default: `\Buildix\Category::class`)
 ```php
 'categories' => [
