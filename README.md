@@ -15,7 +15,7 @@
 
 ## Installation & use
 <!-- TOC -->
-* [Installation](01-install.md)
+* [Installation](docs/01-install.md)
 * [Config](02-config.md)
 * [Page configuration](03-page.md)
 * [Buttons configuration](04-buttons.md)
