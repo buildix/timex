@@ -32,7 +32,7 @@ Integer (default: `0`)
 ```
 Filament group navigation sorting
 
-## shouldRegisterNavigation
+### shouldRegisterNavigation
 Boolean (default: `true`)
 ```php
 'pages' => [
