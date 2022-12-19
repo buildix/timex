@@ -168,6 +168,7 @@ return [
         'icon' => 'heroicon-o-calendar',
         'slug' => 'timex-events',
         'shouldRegisterNavigation' => true,
+        'isStartEndHidden' => false,
     ],
     'models' => [
         'event' => \Buildix\Timex\Models\Event::class,
