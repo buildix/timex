@@ -144,20 +144,14 @@ class Timex extends Page
                             ->color(config('timex.pages.buttons.modal.submit.color','primary'))
                             ->outlined(config('timex.pages.buttons.modal.submit.outlined',false))
                             ->icon(config('timex.pages.buttons.modal.submit.icon.name',''))
-                            ->submit()
-                            ->visible(function (){
-                                return $this->mountedActionData['organizer'] == \Auth::id() ? true : ($this->mountedActionData['organizer'] != \Auth::id() ? $this->mountedActionData['organizer'] == null : true);
-                            }),
+                            ->submit(),
                         Action::makeModalAction('delete')
                             ->label(trans('timex::timex.modal.delete'))
                             ->color(config('timex.pages.buttons.modal.delete.color','danger'))
                             ->outlined(config('timex.pages.buttons.modal.delete.outlined', false))
                             ->icon(config('timex.pages.buttons.modal.delete.icon.name',''))
                             ->action('deleteEvent')
-                            ->cancel()
-                            ->visible(function (){
-                                return $this->mountedActionData['organizer'] == \Auth::id() ? true : ($this->mountedActionData['organizer'] != \Auth::id() ? false : true);
-                            }),
+                            ->cancel(),
                         Action::makeModalAction('cancel')
                             ->label(trans('timex::timex.modal.cancel'))
                             ->color(config('timex.pages.buttons.modal.cancel.color','secondary'))
@@ -217,31 +211,23 @@ class Timex extends Page
         $this->record = $eventID;
         $event = $this->getFormModel()->getAttributes();
         $this->mountAction('openCreateModal');
-        $this->getMountedAction()
+
+        if ($this->getFormModel()->getAttribute('organizer') !== \Auth::id()){
+            $this->getMountedAction()
                 ->modalContent(\view('timex::event.view',['data' => $event]))
                 ->modalHeading($event['subject'])
                 ->form([])
                 ->modalActions([
-                    \Filament\Pages\Actions\Modal\Actions\Action::make('edit')
-                        ->label(trans('timex::timex.modal.edit'))
-                        ->outlined(config('timex.pages.buttons.modal.edit.outlined',false))
-                        ->icon(fn() => config('timex.pages.buttons.modal.edit.icon.enabled', true) ? config('timex.pages.buttons.modal.edit.icon.name','heroicon-o-pencil-alt') : '')
-                        ->color(config('timex.pages.buttons.modal.edit.color','primary'))
-                        ->action('editEvent',['id' => $eventID])
-                        ->hidden($event['organizer'] !== \Auth::id())
-                ]);
-    }
 
-    public function editEvent($id)
-    {
-        $this->record = json_decode($id)->id;
-        $event = $this->getFormModel()->getAttributes();
-        $this->getMountedActionForm()
+                ]);
+        }else{
+            $this->getMountedActionForm()
                 ->fill([
                     ...$event,
                     'participants' => self::getFormModel()?->participants,
                     'attachments' => self::getFormModel()?->attachments,
                 ]);
+        }
     }
 
     public function onDayClick($timestamp)
@@ -262,8 +248,8 @@ class Timex extends Page
             ->fill([
                 'startTime' => Carbon::now()->setMinutes(0)->addHour(),
                 'endTime' => Carbon::now()->setMinutes(0)->addHour()->addMinutes(30),
-                'start' => Carbon::createFromTimestamp($timestamp? $timestamp : today()->timestamp),
-                'end' => Carbon::createFromTimestamp($timestamp? $timestamp : today()->timestamp)
+                'start' => Carbon::createFromTimestamp(isset($timestamp) ? $timestamp : today()->timestamp),
+                'end' => Carbon::createFromTimestamp(isset($timestamp) ? $timestamp : today()->timestamp)
             ]);
     }
 
