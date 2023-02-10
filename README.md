@@ -8,7 +8,9 @@
 
 ![IMG_4796](https://user-images.githubusercontent.com/117465609/213705414-873d6122-ecda-459f-954f-d3b14cfee2e8.JPG)
 
+## Support
 
+Join Discord server to receive quick support: [Buildix](https://discord.gg/EuHKhSrf78)
 ## Installation & use
 <!-- TOC -->
 * [Installation](docs/01-install.md)
