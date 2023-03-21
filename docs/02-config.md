@@ -1,3 +1,21 @@
+<!-- TOC -->
+* [Config values explained:](#config-values-explained)
+  * [#mini](##mini)
+  * [#week](##week)
+  * [#isDayClickEnabled](##isDayClickEnabled)
+  * [#dayName](##dayName)
+  * [#dropDownCols](##dropDownCols)
+  * [#isPastCreationEnabled](##isPastCreationEnabled)
+<!-- TOC -->
+
+# Config
+
+TiMEX can be configured from published `timex.php` config file.
+
+## Config values explained:
+<details><summary>TiMEX Config</summary>
+
+```php
 <?php
 
 use Carbon\Carbon;
@@ -176,7 +194,7 @@ return [
     |
     | Categories names are used to define colors & icons.
     | Each represents default tailwind colors.
-    | You may change as you wish, just make sure your color have -500 / -600 and etc variants
+    | You may change as you wish, just make sure your color have -500 / -600 and other variants
     | You may also go for a custom Category model to define your labels, colors and icons
     |
     */
@@ -226,3 +244,81 @@ return [
     ],
 
 ];
+```
+</details>
+
+## #mini
+### **isMiniCalendarEnabled**
+Boolean (default: `true`)
+```php
+'mini' => [
+    'isMiniCalendarEnabled' => true,
+```
+If it's true, on the header of your page day view & upcoming events widget will be registered
+
+### **isDayViewHidden**
+Boolean (default: `false`)
+```php
+'mini' => [
+    'isDayViewHidden' => false,
+```
+If it's `true`, day view on the header would be hidden
+
+### **isNextMeetingViewHidden**
+Boolean (default: `false`)
+```php
+'mini' => [
+    'isNextMeetingViewHidden' => false,
+],
+```
+If it's `true`, upcoming events widget on the header would be hidden
+
+## #week
+### **start**
+Carbon instance (default: `Carbon::MONDAY`)
+```php
+'week' => [
+  'start' => Carbon::MONDAY,
+],
+```
+You can change start of week on the calendar in accordance with your locale by changing to e.g.: `Carbon::SUNDAY`
+
+### **end**
+Carbon instance (default: `Carbon::SUNDAY`)
+```php
+'week' => [
+  'end' =>  Carbon::SUNDAY
+],
+```
+You can change end of week on the calendar to e.g.: `Carbon::SATURDAY`
+
+## #isDayClickEnabled
+Boolean (default: `true`)
+```php
+'isDayClickEnabled' => true,
+```
+If it's true, you can click on any day on the calendar to create an event on that particular day
+
+## #dayName
+Carbon formatter (default: `minDayName`)
+```php
+'dayName' => 'minDayName',
+```
+Option is used to format how week day names will be displayed on your calendar:
+- `dayName`: Monday / Tuesday / Wednesday ...
+- `shortDayName`: Mon / Tue / Wed ...
+- `minDayName`: Mo / Tu / We ..
+
+## #dropDownCols
+Integer (default: `3`)
+```php
+'dropDownCols' => 3,
+```
+You can change the column grids on the year / month dropdown view
+
+## #isPastCreationEnabled
+Boolean (default: `false`)
+```php
+'isPastCreationEnabled' => false,
+```
+If it's true, users can create & move events to the past days

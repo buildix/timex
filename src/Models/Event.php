@@ -20,7 +20,8 @@ class Event extends Model
         'start' => 'date',
         'end' => 'date',
         'isAllDay' => 'boolean',
-        'participants' => 'array'
+        'participants' => 'array',
+        'attachments' => 'array',
     ];
 
     public function getTable()

@@ -35,7 +35,7 @@ trait InteractWithEvents
 
     protected function getFormModel(): Model|string|null
     {
-        $record = self::getModel()::query()->find($this->record);
+        $record = self::getModel()::find($this->record);
         return $record;
     }
 
@@ -46,7 +46,7 @@ trait InteractWithEvents
         $end = Carbon::create($eventData['end']);
         $toDate = Carbon::createFromTimestamp($data['toDate']);
 
-        if ($eventData['organizer'] == \Auth::id()){
+        if ($eventData['organizer'] == \Auth::id() && (($toDate->isAfter(today()) || $toDate->isCurrentDay())) || config('timex.isPastCreationEnabled', false)){
             $event->update([
                 'start' => Carbon::createFromTimestamp($data['toDate']),
             ]);

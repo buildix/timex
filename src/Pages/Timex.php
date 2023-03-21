@@ -5,24 +5,30 @@ namespace Buildix\Timex\Pages;
 use Buildix\Timex\Calendar\Month;
 use Buildix\Timex\Events\EventItem;
 use Buildix\Timex\Events\InteractWithEvents;
+use Buildix\Timex\Models\Event;
 use Buildix\Timex\Traits\TimexTrait;
 use Carbon\Carbon;
+use Carbon\CarbonPeriod;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Pages\Actions\Action;
 use Filament\Pages\Actions\ActionGroup;
 use Filament\Pages\Actions\CreateAction;
 use Filament\Pages\Actions\DeleteAction;
+use Filament\Pages\Actions\EditAction;
 use Filament\Pages\Page;
 use Filament\Forms;
 use Filament\Resources\Pages\Concerns\UsesResourceForm;
 use Filament\Resources\Resource;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Contracts\View\View;
+use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Fluent;
 use Illuminate\Support\Str;
 use mysql_xdevapi\Collection;
+use voku\helper\ASCII;
 use function Filament\Support\get_model_label;
 
 class Timex extends Page
@@ -32,9 +38,21 @@ class Timex extends Page
     use UsesResourceForm;
 
     protected static string $view = "timex::layout.page";
-    protected $listeners = ['eventUpdated','onEventClick','monthNameChanged','onDayClick','onCreateClick'];
+    protected $listeners = [
+        'eventUpdated',
+        'onEventClick',
+        'monthNameChanged',
+        'onDayClick',
+        'onCreateClick',
+        'onNextDropDownYearClick',
+        'onPrevDropDownYearClick',
+    ];
     protected static $eventData;
     public string $monthName = "";
+    public $year;
+    public $chosenMonth;
+    protected $period;
+    protected $modalHeading;
 
     protected static function getNavigationLabel(): string
     {
@@ -92,12 +110,17 @@ class Timex extends Page
 
     public function monthNameChanged($data,$year)
     {
-            $this->monthName = $data;
+            $this->monthName = Carbon::create($data)->monthName.' '.$this->getYearFormat($data);
+            $this->year = Carbon::create($data);
+            $this->period = CarbonPeriod::create(Carbon::create($data)->firstOfYear(),'1 month',Carbon::create($data)->lastOfYear());
     }
 
     public function __construct()
     {
         $this->monthName = today()->monthName." ".today()->year;
+        $this->year = today();
+        $this->period = CarbonPeriod::create(Carbon::create($this->year->firstOfYear()),'1 month',$this->year->lastOfYear());
+
     }
 
     protected function getActions(): array
@@ -121,20 +144,14 @@ class Timex extends Page
                             ->color(config('timex.pages.buttons.modal.submit.color','primary'))
                             ->outlined(config('timex.pages.buttons.modal.submit.outlined',false))
                             ->icon(config('timex.pages.buttons.modal.submit.icon.name',''))
-                            ->submit()
-                            ->visible(function (){
-                                return $this->mountedActionData['organizer'] == \Auth::id() ? true : ($this->mountedActionData['organizer'] != \Auth::id() ? $this->mountedActionData['organizer'] == null : true);
-                            }),
+                            ->submit(),
                         Action::makeModalAction('delete')
                             ->label(trans('timex::timex.modal.delete'))
                             ->color(config('timex.pages.buttons.modal.delete.color','danger'))
                             ->outlined(config('timex.pages.buttons.modal.delete.outlined', false))
                             ->icon(config('timex.pages.buttons.modal.delete.icon.name',''))
                             ->action('deleteEvent')
-                            ->cancel()
-                            ->visible(function (){
-                                return $this->mountedActionData['organizer'] == \Auth::id() ? true : ($this->mountedActionData['organizer'] != \Auth::id() ? false : true);
-                            }),
+                            ->cancel(),
                         Action::makeModalAction('cancel')
                             ->label(trans('timex::timex.modal.cancel'))
                             ->color(config('timex.pages.buttons.modal.cancel.color','secondary'))
@@ -159,7 +176,7 @@ class Timex extends Page
                     ->organizer($event->organizer)
                     ->participants($event?->participants)
                     ->start(Carbon::create($event->start))
-                    ->startTime($event->startTime);
+                    ->startTime($event?->startTime);
             })->toArray();
 
         return collect($events)->filter(function ($event){
@@ -194,37 +211,45 @@ class Timex extends Page
         $this->record = $eventID;
         $event = $this->getFormModel()->getAttributes();
         $this->mountAction('openCreateModal');
-        $this->getMountedActionForm()
-            ->fill([
-            ...$event,
-            'participants' => self::getFormModel()?->participants
-            ]);
-        $this->getMountedActionForm()->disabled($this->getFormModel()->getAttribute('organizer') !== \Auth::id());
-    }
 
-    public function onDayClick($timestamp)
-    {
-        if (config('timex.isDayClickEnabled')){
-            $this->mountAction('openCreateModal');
+        if ($this->getFormModel()->getAttribute('organizer') !== \Auth::id()){
+            $this->getMountedAction()
+                ->modalContent(\view('timex::event.view',['data' => $event]))
+                ->modalHeading($event['subject'])
+                ->form([])
+                ->modalActions([
+
+                ]);
+        }else{
             $this->getMountedActionForm()
                 ->fill([
-                    'startTime' => Carbon::now()->setMinutes(0)->addHour(),
-                    'endTime' => Carbon::now()->setMinutes(0)->addHour()->addMinutes(30),
-                    'start' => Carbon::createFromTimestamp($timestamp),
-                    'end' => Carbon::createFromTimestamp($timestamp)
+                    ...$event,
+                    'participants' => self::getFormModel()?->participants,
+                    'attachments' => self::getFormModel()?->attachments,
                 ]);
         }
     }
 
-    public function onCreateClick()
+    public function onDayClick($timestamp)
+    {
+        if (config('timex.isDayClickEnabled',true)){
+            if (config('timex.isPastCreationEnabled',false)){
+                $this->onCreateClick($timestamp);
+            }else{
+                Carbon::createFromTimestamp($timestamp)->isBefore(Carbon::today()) ? '' : $this->onCreateClick($timestamp);
+            }
+        }
+    }
+
+    public function onCreateClick(int | string | null $timestamp = null)
     {
         $this->mountAction('openCreateModal');
         $this->getMountedActionForm()
             ->fill([
                 'startTime' => Carbon::now()->setMinutes(0)->addHour(),
                 'endTime' => Carbon::now()->setMinutes(0)->addHour()->addMinutes(30),
-                'start' => Carbon::createFromTimestamp(today()->timestamp),
-                'end' => Carbon::createFromTimestamp(today()->timestamp)
+                'start' => Carbon::createFromTimestamp(isset($timestamp) ? $timestamp : today()->timestamp),
+                'end' => Carbon::createFromTimestamp(isset($timestamp) ? $timestamp : today()->timestamp)
             ]);
     }
 
@@ -232,4 +257,28 @@ class Timex extends Page
     {
         return \view('timex::header.header');
     }
+
+    public function onNextDropDownYearClick()
+    {
+        $this->year = $this->year->addYear();
+        $this->period = CarbonPeriod::create(Carbon::create($this->year->firstOfYear()),'1 month',$this->year->lastOfYear());
+    }
+
+    public function onPrevDropDownYearClick()
+    {
+        $this->year = $this->year->subYear();
+        $this->period = CarbonPeriod::create(Carbon::create($this->year->firstOfYear()),'1 month',$this->year->lastOfYear());
+    }
+
+
+    public function getYearFormat($data)
+    {
+        return Carbon::create($data)->year;
+    }
+
+    public function loadAttachment($file): void
+    {
+        $this->redirect(Storage::url($file));
+    }
+
 }

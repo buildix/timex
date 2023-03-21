@@ -6,9 +6,11 @@ use BladeUI\Icons\Factory;
 use Buildix\Timex\Calendar\Day;
 use Buildix\Timex\Calendar\Event;
 use Buildix\Timex\Calendar\EventList;
+use Buildix\Timex\Calendar\EventView;
 use Buildix\Timex\Calendar\Header;
 use Buildix\Timex\Calendar\Month;
 use Buildix\Timex\Calendar\Week;
+use Buildix\Timex\Commands\MakeAttachmentsTableCommand;
 use Buildix\Timex\Commands\SetTableNameCommand;
 use Buildix\Timex\Widgets\Mini\DayWidget;
 use Buildix\Timex\Widgets\Mini\EventWidget;
@@ -46,6 +48,9 @@ class TimexServiceProvider extends PluginServiceProvider
             ->hasAssets()
             ->hasTranslations()
             ->hasMigration('create_timex_tables')
+            ->hasCommands([
+                MakeAttachmentsTableCommand::class
+            ])
             ->hasInstallCommand(function (InstallCommand $command){
                 $command
                     ->publishConfigFile()

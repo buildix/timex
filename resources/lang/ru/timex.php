@@ -9,6 +9,7 @@ return [
         'submit' => 'Сохранить',
         'cancel' => 'Отмена',
         'delete' => 'Удалить',
+        'edit' => 'Редактировать',
     ],
     'events' => [
         'empty' => 'Нет событий'
@@ -20,7 +21,8 @@ return [
         'allDay' => 'Целый день',
         'start' => 'Начало',
         'end' => 'Окончание',
-        'participants' => 'Участники'
+        'participants' => 'Участники',
+        'attachments' => 'Вложения',
     ],
     'event-list' => [
         'author' => 'Автор: :name',

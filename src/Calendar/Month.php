@@ -29,6 +29,7 @@ class Month extends Component
         'onNextClick' => 'onNextMonthClick',
         'onNextYearClick' => 'onNextYearClick',
         'onPreviousYearClick' => 'onPreviousYearClick',
+        'onMonthDropDownClick' => 'onMonthDropDownClick',
     ];
 
 
@@ -113,7 +114,7 @@ class Month extends Component
         $this->monthName = $this->getMonthName($this->today);
         $this->setCalendar();
         $this->loaded();
-        $this->emitUp('monthNameChanged',$this->monthName,$this->today->year);
+        $this->emitUp('monthNameChanged',$this->today,$this->today->year);
     }
 
     public function onNextMonthClick()
@@ -122,7 +123,7 @@ class Month extends Component
         $this->monthName = $this->getMonthName($this->today);
         $this->setCalendar();
         $this->loaded();
-        $this->emitUp('monthNameChanged',$this->monthName,$this->today->year);
+        $this->emitUp('monthNameChanged',$this->today,$this->today->year);
     }
 
     public function onNextYearClick()
@@ -131,7 +132,7 @@ class Month extends Component
         $this->monthName = $this->getMonthName($this->today);
         $this->setCalendar();
         $this->loaded();
-        $this->emitUp('monthNameChanged',$this->monthName,$this->today->year);
+        $this->emitUp('monthNameChanged',$this->today,$this->today->year);
     }
 
     public function onPreviousYearClick()
@@ -140,7 +141,7 @@ class Month extends Component
         $this->monthName = $this->getMonthName($this->today);
         $this->setCalendar();
         $this->loaded();
-        $this->emitUp('monthNameChanged',$this->monthName,$this->today->year);
+        $this->emitUp('monthNameChanged',$this->today,$this->today->year);
     }
 
     public function onTodayClick()
@@ -149,7 +150,16 @@ class Month extends Component
         $this->monthName = $this->getMonthName($this->today);
         $this->setCalendar();
         $this->loaded();
-        $this->emitUp('monthNameChanged',$this->monthName,$this->today->year);
+        $this->emitUp('monthNameChanged',$this->today,$this->today->year);
+    }
+
+    public function onMonthDropDownClick($month)
+    {
+        $this->today = Carbon::createFromTimestamp($month);
+        $this->monthName = $this->getMonthName($this->today);
+        $this->setCalendar();
+        $this->loaded();
+        $this->emitUp('monthNameChanged',$this->today,$this->today->year);
     }
 
     public function setStartOfMonth()
@@ -181,7 +191,7 @@ class Month extends Component
     public function loaded(){
 
         $this->dispatchBrowserEvent('monthLoaded',$this->getDays());
-        $this->emitUp('monthNameChanged',$this->monthName,$this->today->year);
+        $this->emitUp('monthNameChanged',$this->today,$this->today->year);
     }
     public function onEventChanged($eventID, $toDate)
     {

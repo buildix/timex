@@ -18,7 +18,7 @@ class EventItem
     public $organizer;
     public $participants = [];
     public $start;
-    public $startTime;
+    public ?string $startTime = null;
     protected string $subject;
     protected $type;
 
@@ -82,14 +82,14 @@ class EventItem
         return $this;
     }
 
-    public function startTime($startTime):static
+    public function startTime(?string $startTime):static
     {
         $this->startTime = $startTime;
 
         return $this;
     }
 
-    public function getStartTime()
+    public function getStartTime(): ?string
     {
         return $this->startTime;
     }

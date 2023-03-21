@@ -26,6 +26,6 @@ class DayWidget extends Component
 
     public function openCalendar()
     {
-        return \Redirect::to(config('filament.path').'/'.$this->getPageClass()::getSlug());
+        return \Redirect::to(config('FILAMENT_PATH').'/'.$this->getPageClass()::getSlug());
     }
 }
