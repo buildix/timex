@@ -25,12 +25,32 @@ class ListEvents extends ListRecords
 
     protected function getTableQuery(): Builder
     {
-        if (in_array('participants',\Schema::getColumnListing(self::getEventTableName()))){
+        if (in_array('participants', \Schema::getColumnListing(self::getEventTableName()))) {
             return parent::getTableQuery()
-                ->where('organizer','=',\Auth::id())
-                ->orWhereJsonContains('participants', \Auth::id());
-        }else{
+                ->where('organizer', '=', \Auth::id())
+                ->orWhereRaw('JSON_CONTAINS(participants, \'"' . \Auth::id() . '"\')');
+        } else {
             return parent::getTableQuery();
         }
+    }
+
+    public function mount()
+    {
+        self::setupSqlite();
+    }
+
+    private static function setupSqlite(): void
+    {
+        DB::connection()->getPdo()->sqliteCreateFunction('JSON_CONTAINS', function ($json, $val, $path = null) {
+            $array = json_decode($json, true, 512, JSON_THROW_ON_ERROR);
+
+            $val = trim($val, '"');
+
+            if ($path) {
+                return $array[$path] == $val;
+            }
+
+            return in_array($val, $array, true);
+        });
     }
 }
