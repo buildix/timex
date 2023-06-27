@@ -6,7 +6,7 @@
 
     </span>
     <div @class([ 'border border-' .$color.'-600 hover:text-'.$color.'-500'=> !$isMyEvent && !$isWidgetEvent,
-        'grid grid-cols-7 items-center text-left rtl:text-right text-xs font-light cursor-pointer',
+        'grid grid-cols-7 items-center ltr:text-left rtl:text-right text-xs font-light cursor-pointer',
         'w-full rounded ml-1 mr-1',
         'hover:bg-'.$color.'-600/20' => $color !== 'secondary' && !$isWidgetEvent,
         'hover:bg-gray-600/20' => $color == 'secondary' && !$isWidgetEvent,
@@ -31,8 +31,8 @@
             ])>
             {{$subject}}
         </div>
-        <div @class([ 'col-span-2 ml-2 truncate'=> !$isWidgetEvent,
-            'col-span-2 ml-4 truncate' => $isWidgetEvent
+        <div @class([ 'col-span-2 ltr:ml-2 rtl:mr-2 truncate'=> !$isWidgetEvent,
+            'col-span-2 ltr:ml-4 rtl:mr-4 truncate' => $isWidgetEvent
             ])>
             @if($isAllDay || config('timex.resources.isStartEndHidden',false))
             {{config('timex.resources.isStartEndHidden',false) ? '' : trans('timex::timex.event.allDay')}}
