@@ -1,4 +1,4 @@
-<div class="grid grid-flow-row overflow-x-hidden overflow-y-auto scroll-smooth" style="height: 40px;">
+<div class="grid grid-flow-row items-center overflow-x-hidden overflow-y-auto scroll-smooth" style="height: 40px;">
     @foreach($events as $event)
         <div id="{{ $event->getEventID() }}">
             <livewire:timex-event
